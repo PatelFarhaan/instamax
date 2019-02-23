@@ -185,7 +185,9 @@ body {
                           Tools
                         </a>
                         <div class="dropdown-menu mobileMenuDropDownbg" aria-labelledby="navbarDropdown">
+                          {% if current_user.is_authenticated %}
                           <a class="dropdown-item" href="{{ url_for('users.accept_pending_requests') }}">Accept Pending Requests</a>
+                          {% endif %}
                           <a class="dropdown-item" href="{{ url_for('users.live_counter') }}">Live Counter</a>
                           <a class="dropdown-item" href="Downloader.html">Post/DP Downloader</a>
                           <a class="dropdown-item" href="MassDelete.html">Mass Post Delete</a>

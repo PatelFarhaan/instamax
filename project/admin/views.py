@@ -19,14 +19,6 @@ def login():
 
         admin_email = request.form['admin_email']
         admin_password = request.form['admin_password']
-
-        # new_admin = Admin(email='admin',
-        #                   password='admin')
-        # from project import db
-        #
-        # db.session.add(new_admin)
-        # db.session.commit()
-        # return "True"
         admin = Admin.query.filter_by(email=admin_email).first_or_404()
         if admin.check_hashed_password(admin_password) and admin is not None:
             login_user(admin)
