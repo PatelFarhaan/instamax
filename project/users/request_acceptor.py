@@ -14,7 +14,7 @@ class InstagramBot:
         self.username = username
         self.password = password
         self.options = webdriver.ChromeOptions()
-        # self.options.add_argument('--headless')
+        self.options.add_argument('--headless')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-extentions')
         self.options.add_argument('--enable-popup-blocking')
