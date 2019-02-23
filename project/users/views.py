@@ -100,6 +100,7 @@ def request_acceptor():
 @users_blueprint.route('/login', methods=['GET','POST'])
 def login():
 
+    # import ipdb; ipdb.set_trace()
     if request.method == 'POST':
         instagram_username = request.form['userEmailID']
         instagram_password = request.form['userLoginPassword']
@@ -111,7 +112,7 @@ def login():
         insta_login_response = insta_bot.login()
         insta_bot.closeBrowser()
 
-        if instagram_username:
+        if insta_login_response:
             user_obj = Users.query.filter_by(insta_username=instagram_username).first()
             if not user_obj:
                 new_user = Users(insta_username=instagram_username)

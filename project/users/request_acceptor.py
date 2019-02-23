@@ -6,7 +6,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-
+user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
 
 class InstagramBot:
 
@@ -14,11 +14,13 @@ class InstagramBot:
         self.username = username
         self.password = password
         self.options = webdriver.ChromeOptions()
-        self.options.add_argument('--headless')
+        # self.options.add_argument('--headless')
+        self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-extentions')
         self.options.add_argument('--enable-popup-blocking')
         self.options.add_argument('--disable-gpu')
         self.options.add_argument("--log-level=3")
+        self.options.add_argument(f'user-agent={user_agent}')
         self.driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', chrome_options=self.options)
 
 

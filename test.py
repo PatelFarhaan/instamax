@@ -1,13 +1,27 @@
-import time
-from selenium import webdriver
 
 
-options = webdriver.ChromeOptions()
-options.add_argument('--headless')
-options.add_argument('--disable-extentions')
-options.add_argument('--enable-popup-blocking')
-options.add_argument('--disable-gpu')
-options.add_argument("--log-level=3")
-driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', chrome_options=options)
-print("Done")
-driver.close()
+class first():
+
+    def __init__(self, name):
+        self.name = name
+
+
+    def name(self):
+        return self.name
+
+
+
+class second():
+
+    def __init__(self, sirname):
+        self.sirname = sirname
+
+
+    def kat(self):
+        obj1 = first('reference')
+        ans2 = obj1.name
+        return ans2
+
+
+obj2 = second('adad')
+ans = obj2.kat
