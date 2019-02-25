@@ -61,15 +61,18 @@ def accept_pending_requests():
 def live_counter():
 
     if request.method == 'POST':
-        instagram_username = request.form['instagram_username']
-        response = requests.get('https://www.instagram.com/web/search/topsearch/?query={un}'.format(un=instagram_username))
-        resp = response.json()
-        for i in resp['users']:
-            if i['user']['username'] == instagram_username.lower():
-                user_id = i['user']['pk']
-                count = i['user']['follower_count']
+        try:
+            instagram_username = request.form['instagram_username']
+            response = requests.get('https://www.instagram.com/web/search/topsearch/?query={un}'.format(un=instagram_username))
+            resp = response.json()
+            for i in resp['users']:
+                if i['user']['username'] == instagram_username.lower():
+                    user_id = i['user']['pk']
+                    count = i['user']['follower_count']
 
-        return render_template('count_display.html', user_count=count)
+            return render_template('count_display.html', user_count=count)
+        except:
+            return render_template('LiveCounter.html')
     return render_template('LiveCounter.html')
 
 
