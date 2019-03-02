@@ -7,7 +7,7 @@ https://about.me/grohit -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="../static/logo.jpeg" />
+    <link rel="shortcut icon"s href="https://i.postimg.cc/B6kk4MyD/AM-icon.png" />
    <meta name="application-name" content="Pricing | AcceptMe,in">
    <meta name="description" content="An efficient website to help you accept all your pending requests on Instagram profile in a very convenient way. Visit once and experience the magic." />
    <meta property="og:description" content="An efficient website to help you accept all your pending requests on Instagram profile in a very convenient way. Visit once and experience the magic." />
@@ -23,7 +23,7 @@ https://about.me/grohit -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
 crossorigin="anonymous">
 
-    <title>Page Not Found</title>
+    <title>Admin | Accept ME</title>
 <link rel="stylesheet" href="../static/acceptmestyling.css">
 
 <style>
@@ -56,9 +56,10 @@ tr:nth-child(even) {
     <!-- Image and text -->
 
       <nav class="navbar navbar-expand-lg fixed-top">
-            <a class="navbar-brand" href="#">
-                <img src="https://i.postimg.cc/5NWT002Q/Accept-ME-white.png" alt="accept me logo" width="120px" height="auto">
-                    </a>
+        <a class="navbar-brand" href="{{ url_for('core.index') }}">
+            <img src="https://i.postimg.cc/5NWT002Q/Accept-ME-white.png" alt="accept me logo" width="120px"
+                height="auto">
+        </a>
                   <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
             </button>
@@ -91,7 +92,7 @@ tr:nth-child(even) {
 
     <div class="col-md-12">
       <div style="text-align:center">
-      <form id="searchform"  action="{{ url_for('admin.search') }}" method="POST" style="margin:30px 0;">
+      <form id="searchform"  action="{{ url_for('admin.account') }}" method="POST" style="margin:30px 0;">
     <input type="text" placeholder="Search.." name="search" style="border:1px solid #c2c2c2 !important;opacity:">
     <button type="submit" style="padding: 10px;border: 0;background: #000000;color: #ffffff;width: 100px;height: 45px;">Search</button>
   </form>

@@ -28,6 +28,7 @@ if not database_exists(app.config['SQLALCHEMY_DATABASE_URI']):
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'users.login'
+login_manager.login_view = 'admin.login'
 
 #########   ###########################################################################################
 

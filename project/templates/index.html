@@ -27,6 +27,17 @@ https://about.me/grohit -->
 
     <title>Login | AcceptMe.in</title>
     <link rel="stylesheet" href="../static/acceptmestyling.css">
+
+    <style media="screen">
+    .farhaan {
+        text-align: center;
+        border: 1px solid green;
+        background-color: orange;
+        line-height: 7px;
+        padding: 16px 0 0 0;
+    }
+    </style>
+
 </head>
 
 <body class="bg">
@@ -58,7 +69,7 @@ https://about.me/grohit -->
                                 Tools
                             </a>
                             <div class="dropdown-menu mobileMenuDropDownbg" aria-labelledby="navbarDropdown">
-                              
+
                                 {% if current_user.is_authenticated %}
   <a class="dropdown-item" href="{{ url_for('users.accept_pending_requests', username='Farhaan') }}">Accept Pending Requests</a>
   {% endif %}
@@ -109,6 +120,7 @@ https://about.me/grohit -->
                         <button type="submit" id="loginBtn">Login</button> <br><br>
 
                     </form>
+
                     <!-- Modal for forgot password-->
 
                     <!-- Modal for forgot password ends -->
@@ -137,6 +149,14 @@ https://about.me/grohit -->
         </div>
         <!-- <div class="push"></div> -->
     </div>
+
+    {% if msg %}
+    <div class="farhaan">
+      <p>{{ msg }}</p>
+    </div>
+    {% endif %}
+
+
 
     <footer class="text-center footer">
         <a href="{{ url_for('core.index') }}" style="text-decoration: none">AcceptMe</a> <span class="color:#ffffff;">&copy; 2018</span>

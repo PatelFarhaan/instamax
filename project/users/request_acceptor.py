@@ -6,7 +6,6 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
 
 class InstagramBot:
 
@@ -20,7 +19,6 @@ class InstagramBot:
         self.options.add_argument('--enable-popup-blocking')
         self.options.add_argument('--disable-gpu')
         self.options.add_argument("--log-level=3")
-        self.options.add_argument(f'user-agent={user_agent}')
         self.driver = webdriver.Chrome(executable_path='/usr/local/bin/chromedriver', chrome_options=self.options)
 
 
@@ -35,7 +33,7 @@ class InstagramBot:
             time.sleep(2)
             login_button = driver.find_element_by_xpath("//a[@href='/accounts/login/?source=auth_switcher']")
             login_button.click()
-            time.sleep(2)
+            time.sleep(10)
             user_name_elem = driver.find_element_by_xpath("//input[@name='username']")
             user_name_elem.clear()
             user_name_elem.send_keys(self.username)
@@ -43,7 +41,7 @@ class InstagramBot:
             passworword_elem.clear()
             passworword_elem.send_keys(self.password)
             passworword_elem.send_keys(Keys.RETURN)
-            time.sleep(2)
+            time.sleep(10)
             try:
                 driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
             except:
@@ -58,10 +56,10 @@ class InstagramBot:
         try:
             driver = self.driver
             driver.get("https://www.instagram.com/")
-            time.sleep(2)
+            time.sleep(10)
             login_button = driver.find_element_by_xpath("//a[@href='/accounts/login/?source=auth_switcher']")
             login_button.click()
-            time.sleep(2)
+            time.sleep(10)
             user_name_elem = driver.find_element_by_xpath("//input[@name='username']")
             user_name_elem.clear()
             user_name_elem.send_keys(self.username)
@@ -69,7 +67,7 @@ class InstagramBot:
             passworword_elem.clear()
             passworword_elem.send_keys(self.password)
             passworword_elem.send_keys(Keys.RETURN)
-            time.sleep(2)
+            time.sleep(10)
             try:
                 driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
             except:
@@ -84,32 +82,60 @@ class InstagramBot:
         driver = self.driver
         try:
             driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+            time.sleep(10)
         except:
             pass
         driver.find_element_by_xpath("/html/body/span/section/nav/div[2]/div/div/div[3]/div/div[2]/a/span").click()
-        try:
-            pending_count = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "JRHhD")))
-            pending_count_requests = int(pending_count.text)
+        time.sleep(10)
 
-            return pending_count_requests
+        try:
+            try:
+                pending_count = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "JRHhD")))
+                pending_count_requests = int(pending_count.text)
+
+                return pending_count_requests
+            except:
+                pending_count = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "JRHhD")))
+                pending_count = pending_count.text[:-1]
+                pending_count_requests = int(pending_count)
+
+                return 1000
         except:
             return "No request to accept"
-
 
 
     def accept_pending_requests(self, request_accept_count):
+
         driver = self.driver
+        var1 = int(request_accept_count/15)
+        if request_accept_count % 15:
+            var1 = int(var1 + 1)
+
         try:
-            driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
-        except:
-            pass
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "M_9ka"))).click()
-        try:
-            for i in range(1, request_accept_count+1):
-                xpath_for_confirm = '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div/div[4]/div/div[1]/div/div[{count}]/div[3]/div/div[1]/button'.format(count=i)
-                WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
-                session['accepted_count'] = i
-            return "{} Requests Accepted".format(i)
+            for j in range(0, var1):
+                try:
+                    driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                except:
+                    pass
+
+                try:
+                    driver.find_element_by_xpath(
+                        "/html/body/span/section/nav/div[2]/div/div/div[3]/div/div[2]/a/span").click()
+                except:
+                    pass
+
+                WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "M_9ka"))).click()
+
+                for i in range(1, 16):
+
+                    xpath_for_confirm = '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div/div[4]/div/div[1]/div/div[{count}]/div[3]/div/div[1]/button'.format(count=i)
+                    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
+
+                    session['accepted_count'] = request_accept_count
+                driver.find_element_by_xpath(
+                    '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div').click()
+            print(request_accept_count)
+            return "{} Requests Accepted".format(request_accept_count)
 
         except:
-            return "No request to accept"
+            return "All requests Accepted"

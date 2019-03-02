@@ -18,25 +18,36 @@ users_blueprint = Blueprint('users', __name__, template_folder='templates')
 def accept_pending_requests():
 
     if request.method == 'POST':
-
-        no_of_request_to_accept = request.form['noOfFollowers']
-        user = Users.query.filter_by(insta_username=session['insta_username']).first()
-        user.accept_request_count = no_of_request_to_accept
-        db.session.commit()
-
+        try:
+            no_of_request_to_accept = request.form['noOfFollowers']
+            user = Users.query.filter_by(insta_username=session['insta_username']).first()
+            user.accept_request_count = int(no_of_request_to_accept)
+            db.session.commit()
+        except:
+            custom_number = request.form['customUserInputNumber']
+            if int(custom_number) > 0:
+                user = Users.query.filter_by(insta_username=session['insta_username']).first()
+                user.accept_request_count = int(custom_number)
+                db.session.commit()
+            else:
+                pass
+        # import ipdb; ipdb.set_trace()
         is_subscribed = user.is_subscribed
         if is_subscribed:
             user = Users.query.filter_by(insta_username=session['insta_username']).first()
             instagram_accept_request_count = user.accept_request_count
-            instagram_accept_request_count = instagram_accept_request_count[:-1]
-            instagram_accept_request_count = int(instagram_accept_request_count) * 1000
+            if instagram_accept_request_count[:-1] == 'K':
+                instagram_accept_request_count = instagram_accept_request_count[:-1]
+                instagram_accept_request_count = int(instagram_accept_request_count) * 1000
+            else:
+                instagram_accept_request_count = int(instagram_accept_request_count)
 
             insta_obj = InstagramBot(session['insta_username'], session['insta_password'])
             insta_obj.login2()
             counts =insta_obj.pending_request_count()
 
             try:
-                if counts < instagram_accept_request_count:
+                if counts <= instagram_accept_request_count:
                     resp = insta_obj.accept_pending_requests(counts)
                 else:
                     resp = insta_obj.accept_pending_requests(instagram_accept_request_count)
@@ -62,7 +73,9 @@ def live_counter():
 
     if request.method == 'POST':
         try:
+
             instagram_username = request.form['instagram_username']
+            session['live_counter'] = instagram_username
             response = requests.get('https://www.instagram.com/web/search/topsearch/?query={un}'.format(un=instagram_username))
             resp = response.json()
             for i in resp['users']:
@@ -79,11 +92,12 @@ def live_counter():
 @login_required
 @users_blueprint.route('/request_acceptor_api', methods=['GET','POST'])
 def request_acceptor():
-
+    # import ipdb; ipdb.set_trace()
     user = Users.query.filter_by(insta_username=session['insta_username']).first()
     instagram_accept_request_count = user.accept_request_count
-    instagram_accept_request_count = instagram_accept_request_count[:-1]
-    instagram_accept_request_count = int(instagram_accept_request_count) * 1000
+    if instagram_accept_request_count[:-1] == 'K':
+        instagram_accept_request_count = instagram_accept_request_count[:-1]
+        instagram_accept_request_count = int(instagram_accept_request_count) * 1000
 
     insta_obj = InstagramBot(session['insta_username'], session['insta_password'])
     insta_obj.login2()
@@ -103,7 +117,6 @@ def request_acceptor():
 @users_blueprint.route('/login', methods=['GET','POST'])
 def login():
 
-    # import ipdb; ipdb.set_trace()
     if request.method == 'POST':
         instagram_username = request.form['userEmailID']
         instagram_password = request.form['userLoginPassword']
@@ -114,6 +127,10 @@ def login():
         insta_bot = InstagramBot(instagram_username, instagram_password)
         insta_login_response = insta_bot.login()
         insta_bot.closeBrowser()
+
+        if insta_login_response == False:
+            msg = 'Invalid Credentails'
+            return render_template('index.html', msg=msg)
 
         if insta_login_response:
             user_obj = Users.query.filter_by(insta_username=instagram_username).first()

@@ -33,38 +33,37 @@ def login():
     return render_template('admin/login.html')
 
 
-@login_required
-@admins_blueprint.route('/admin_account', methods=['GET', 'POST'])
-def search():
-    if request.method == 'POST':
-        insta_username = request.form["search"]
-        users = Users.query.filter(Users.insta_username.like("%{}%".format(insta_username))).all()
-        return render_template('admin/account.html', users=users)
 
-    obj = Users.query.all()
-    return render_template('admin/account.html', users=obj)
-
+@admins_blueprint.route('/acceptme_portal', methods=['GET','POST'])
 @login_required
-@admins_blueprint.route('/admin_account', methods=['GET','POST'])
 def account():
+    try:
+        if request.method == 'POST':
+            subscription = request.form["subscriptions"]
+            username = request.form["username"]
+            is_subs = request.form["is_subscribed"]
+            print(subscription, username, is_subs)
 
-    if request.method == 'POST':
-        subscription = request.form["subscriptions"]
-        username = request.form["username"]
-        is_subs = request.form["is_subscribed"]
-        print(subscription, username, is_subs)
+            from project import db
 
-        from project import db
+            user = Users.query.filter_by(insta_username=username).first_or_404()
+            user.subscription_plan = subscription
+            user.from_date = datetime.datetime.utcnow()
+            user.till_date = datetime.datetime.now() + timedelta(days=int(subscription))
+            user.is_subscribed = True
+            db.session.commit()
 
-        user = Users.query.filter_by(insta_username=username).first_or_404()
-        user.subscription_plan = subscription
-        user.from_date = datetime.datetime.utcnow()
-        user.till_date = datetime.datetime.now() + timedelta(days=int(subscription))
-        user.is_subscribed = True
-        db.session.commit()
+        obj = Users.query.all()
+        return render_template('admin/account.html', users=obj)
+    except:
+        if request.method == 'POST':
+            insta_username = request.form["search"]
+            users = Users.query.filter(Users.insta_username.like("%{}%".format(insta_username))).all()
+            return render_template('admin/account.html', users=users)
 
-    obj = Users.query.all()
-    return render_template('admin/account.html', users=obj)
+        obj = Users.query.all()
+        return render_template('admin/account.html', users=obj)
+
 
 
 @login_required
