@@ -12,7 +12,7 @@ from flask import Blueprint, redirect, request, render_template, url_for
 admins_blueprint = Blueprint('admin', __name__, template_folder='templates')
 
 
-@admins_blueprint.route('/admin_login', methods=['GET','POST'])
+@admins_blueprint.route('/acceptme_portal', methods=['GET','POST'])
 def login():
 
     if request.method == 'POST':
@@ -34,7 +34,7 @@ def login():
 
 
 
-@admins_blueprint.route('/acceptme_portal', methods=['GET','POST'])
+@admins_blueprint.route('/admin_account', methods=['GET','POST'])
 @login_required
 def account():
     try:

@@ -13,10 +13,14 @@ from flask import Blueprint, render_template, redirect, url_for, request, sessio
 users_blueprint = Blueprint('users', __name__, template_folder='templates')
 
 
+@users_blueprint.route('/request_accepted_count', methods=['GET', 'POST'])
+def request_accepted_count():
+    return str(session['request_accepted_count'])
+
 @login_required
 @users_blueprint.route('/accept_pending_requests', methods=['GET', 'POST'])
 def accept_pending_requests():
-
+    # import ipdb; ipdb.set_trace()
     if request.method == 'POST':
         try:
             no_of_request_to_accept = request.form['noOfFollowers']
@@ -31,7 +35,7 @@ def accept_pending_requests():
                 db.session.commit()
             else:
                 pass
-        # import ipdb; ipdb.set_trace()
+        print("inside func")
         is_subscribed = user.is_subscribed
         if is_subscribed:
             user = Users.query.filter_by(insta_username=session['insta_username']).first()
@@ -48,13 +52,14 @@ def accept_pending_requests():
 
             try:
                 if counts <= instagram_accept_request_count:
-                    resp = insta_obj.accept_pending_requests(counts)
+                    insta_obj.accept_pending_requests(counts)
                 else:
-                    resp = insta_obj.accept_pending_requests(instagram_accept_request_count)
+                    insta_obj.accept_pending_requests(instagram_accept_request_count)
             except:
                 resp = "No request to accept"
             insta_obj.closeBrowser()
-            return render_template('acceptor_display.html', instagram_username = session['insta_username'], resp=resp)
+            resp = ''
+            # return render_template('acceptor_display.html', instagram_username = session['insta_username'], resp=resp)
         else:
             return redirect(url_for('core.pricing'))
     try:
@@ -82,12 +87,11 @@ def live_counter():
                 if i['user']['username'] == instagram_username.lower():
                     user_id = i['user']['pk']
                     count = i['user']['follower_count']
-
-            return render_template('count_display.html', user_count=count)
+            name = '@'+instagram_username[0].capitalize() + instagram_username[1:]
+            return render_template('count_display.html', name=name, user_count=count)
         except:
             return render_template('LiveCounter.html')
     return render_template('LiveCounter.html')
-
 
 @login_required
 @users_blueprint.route('/request_acceptor_api', methods=['GET','POST'])
@@ -117,6 +121,7 @@ def request_acceptor():
 @users_blueprint.route('/login', methods=['GET','POST'])
 def login():
 
+    # import ipdb; ipdb.set_trace()
     if request.method == 'POST':
         instagram_username = request.form['userEmailID']
         instagram_password = request.form['userLoginPassword']

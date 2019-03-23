@@ -230,7 +230,7 @@ body {
         <!--form action="{{ url_for('users.request_acceptor') }}" method="POST" class="text-center" onsubmit="return validateLogin()" name="loginForm"-->
             <br>
 
-            {% if not resp == "No request to accept" %}
+            {% if not resp == "No request to accept" and "/" %}
             <p>&nbsp;</p>
             <p>&nbsp;</p>
             <p>&nbsp;</p>
@@ -381,7 +381,7 @@ body {
 </div>
 
 <footer class="text-center footer">
-    <a href="{{ url_for('core.index') }}" style="text-decoration: none">AcceptMe</a> <span class="color:#ffffff;">&copy; 2018</span>
+    <a href="{{ url_for('core.index') }}" style="text-decoration: none">AcceptMe</a> <span class="color:#ffffff;">&copy; 2019</span>
 </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS - -  >
