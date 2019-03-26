@@ -47,7 +47,6 @@ class InstagramBot:
             except:
                 pass
             driver.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[1]/a/span').click()
-
             return True
         except:
             return False
@@ -110,7 +109,7 @@ class InstagramBot:
         # import ipdb; ipdb.set_trace()
         var1 = int(request_accept_count/15)
         var2 = request_accept_count%15
-
+        print("farhaan")
         try:
             if var1 > 0:
                 for j in range(0, var1):
@@ -134,7 +133,7 @@ class InstagramBot:
                         time.sleep(0.5)
 
                         session['accepted_count'] = request_accept_count
-                        session['request_accepted_count'] = i
+                        session['request_accepted_counter'] = i
                     time.sleep(4)
                     driver.find_element_by_xpath(
                         '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div').click()
@@ -155,7 +154,7 @@ class InstagramBot:
                         WebDriverWait(driver, 5).until(
                             EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
                         session['accepted_count'] = request_accept_count
-                        session['request_accepted_count'] = i
+                        session['request_accepted_counter'] = i
                     return "{} Requests Accepted".format(request_accept_count)
 
                 except:

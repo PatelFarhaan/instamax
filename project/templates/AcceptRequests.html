@@ -2,7 +2,7 @@
 https://about.me/grohit -->
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,20 +12,31 @@ https://about.me/grohit -->
     <meta property="og:description" content="An efficient website to help you accept all your pending requests on Instagram profile in a very convenient way. Visit once and experience the magic." />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="keywords" content="Pending,request,instagram,insta,gram,telegram,facebook,gmail,whatsapp,intasgrm,graminsta,user,followers,acceptall,allow,users, pending instagram requests, downloader, insta DP, instagram profile pic, instagram profile, picture, download instagram video, video downloader, Acceptme,Accept,Me">
-  <meta name="robots" content="index, follow">
-  <meta name="copyright" content="Acceptme.in">
-  <meta name="revisit-after" content="1 week">
+    <meta name="robots" content="index, follow">
+    <meta name="copyright" content="Acceptme.in">
+    <meta name="revisit-after" content="1 week">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-<!-- font awesome -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
-crossorigin="anonymous">
+    <!-- font awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+          crossorigin="anonymous">
 
     <title>Request Acceptor | AcceptMe</title>
-<link rel="stylesheet" href="../static/acceptmestyling.css">
+    <link rel="stylesheet" href="../static/acceptmestyling.css">
 
-<style media="screen">
+<!-- Odometr includes -->
+<link rel="stylesheet" href="http://github.hubspot.com/odometer/themes/odometer-theme-car.css" /><!-- car -->
+<script src="http://github.hubspot.com/odometer/odometer.js"></script>
+
+<!-- Extra styles for this example -->
+<style>
+.odometer {
+    font-size: 60px;
+}
+
+</style>
+    <style media="screen">
 .farhaan {
     text-align: center;
     border: 1px solid green;
@@ -35,252 +46,141 @@ crossorigin="anonymous">
 }
 </style>
 
-  </head>
-  <body class="bg">
+</head>
+<body class="bg">
 <div class="content">
     <div class="container">
-    <!-- Image and text -->
+        <!-- Image and text -->
 
-
-    <!--odometer-->
-    <div id="counter" class="odometer" style="display:none">
-
-    <ul class="digits">
-      <li class="digit">
-        <span class="cou-item cou-item-anim">
-          <ul>
-            <li>9</li>
-            <li>0</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>0</li>
-          </ul>
-        </span>
-      </li>
-      <li class="digit">
-        <span class="cou-item">
-          <ul>
-            <li>9</li>
-            <li>0</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>0</li>
-          </ul>
-        </span>
-      </li>
-      <li class="digit">
-        <span class="cou-item">
-          <ul>
-            <li>9</li>
-            <li>0</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>0</li>
-          </ul>
-        </span>
-      </li>
-      <li class="digit">
-        <span class="cou-item">
-          <ul>
-            <li>9</li>
-            <li>0</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>0</li>
-          </ul>
-        </span>
-      </li>
-      <li class="digit">
-        <span class="cou-item">
-          <ul>
-            <li>9</li>
-            <li>0</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>5</li>
-            <li>6</li>
-            <li>7</li>
-            <li>8</li>
-            <li>9</li>
-            <li>0</li>
-          </ul>
-        </span></li>
-        <li class="digit" style="display:None">
-          <span class="cou-item">
-            <ul>
-              <li>9</li>
-              <li>0</li>
-              <li>1</li>
-              <li>2</li>
-              <li>3</li>
-              <li>4</li>
-              <li>5</li>
-              <li>6</li>
-              <li>7</li>
-              <li>8</li>
-              <li>9</li>
-              <li>0</li>
-            </ul>
-          </span></li>
-      <li class="digit"><i class="fa fa-instagram"></i></li>
-    </ul>
-
-    </div>
-    <!--odometer end-->
-
-
-      <nav class="navbar navbar-expand-lg fixed-top navbar-fixed-top">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-fixed-top">
             <a class="navbar-brand" href="{{ url_for('core.index') }}">
                 <img src="https://i.postimg.cc/5NWT002Q/Accept-ME-white.png" alt="accept me logo" width="120px" height="auto">
-                    </a>
-                  <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+            </a>
+            <button class="navbar-toggler custom-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse mobileMenubg" id="navbarCollapse">
 
-              <ul class="navbar-nav ml-auto text-dark text-center">
-                <li class="nav-item active">
-                  <a class="nav-link" href="{{ url_for('core.index') }}">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item dropdown">
+                <ul class="navbar-nav ml-auto text-dark text-center">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('core.index') }}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Tools
+                            Tools
                         </a>
                         <div class="dropdown-menu mobileMenuDropDownbg" aria-labelledby="navbarDropdown">
-                          <a class="dropdown-item activePage" href="{{ url_for('users.accept_pending_requests') }}">Accept Pending Requests</a>
-                          <a class="dropdown-item" href="{{ url_for('users.live_counter') }}">Live Counter</a>
-                          <!-- <a class="dropdown-item" href="Downloader.html">Post/DP Downloader</a> -->
-                          <!-- <a class="dropdown-item" href="MassDelete.html">Mass Post Delete</a> -->
-                          <!-- <a class="dropdown-item" href="MassUnfollow.html">Mass Unfollow</a> -->
+                            <a class="dropdown-item activePage" href="{{ url_for('users.accept_pending_requests') }}">Accept Pending Requests</a>
+                            <a class="dropdown-item" href="{{ url_for('users.live_counter') }}">Live Counter</a>
+                            <!-- <a class="dropdown-item" href="Downloader.html">Post/DP Downloader</a> -->
+                            <!-- <a class="dropdown-item" href="MassDelete.html">Mass Post Delete</a> -->
+                            <!-- <a class="dropdown-item" href="MassUnfollow.html">Mass Unfollow</a> -->
                         </div>
-                      </li>
-                <li class="nav-item">
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('core.pricing') }}">Pricing</a>
-                      </li>
-                      <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('core.faq') }}">FAQ</a>
-                          </li>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('core.faq') }}">FAQ</a>
+                    </li>
 
 
-                <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('core.contact') }}">Contact</a>
-                      </li>
+                    </li>
 
-                      {% if current_user.is_authenticated %}
-                      <li class="nav-item">
-                          <a class="nav-link" href="{{ url_for('users.logout') }}">Log out</a>
-                      </li>
-                      {% endif %}
-              </ul>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('users.logout') }}">Log out</a>
+                    </li>
+                    {% endif %}
+                </ul>
             </div>
-          </nav>
+        </nav>
 
-    <div class="row mt-5 text-center">
-        <div class="col-md-12">
+        <div class="row mt-5 text-center">
+            <div class="col-md-12">
 
-            <div class="card-deck m-auto" id="acceptorCardWidth">
-                <!-- first contact card starts-->
-                <div class="card animated slideInUp slow acceptor-card ">
-                  <h3 class="card-header font-body text-center text-warning">Welcome {{ instagram_username }}!!
-                  </h3>
-                   <form action="" method="POST" id="acceptorForm" >
+                <div class="card-deck m-auto" id="acceptorCardWidth">
+                    <!-- first contact card starts-->
+                    <div class="card animated slideInUp slow acceptor-card ">
+                        <h3 class="card-header font-body text-center text-warning">Welcome {{ instagram_username }}!!
+                        </h3>
+
                             <label for="FormControlSelectFollowersNo" class="text-white">Select the number of Requests you want to accept.</label> <br>
                             <select name="noOfFollowers" class="form-control mb-3" id="FormControlSelectFollowersNo" onchange="showfield(this.options[this.selectedIndex].value)">
-                              <option>1K</option>
-                              <option>2K</option>
-                              <option>3K</option>
-                              <option>4K</option>
-                              <option>5K</option>
-                              <option>6K</option>
-                              <option>7K</option>
-                              <option>8K</option>
-                              <option>9K</option>
-                              <option>10K</option>
-                              <option class="text-uppercase" value="custom">Custom</option>
-                                          <!-- <option class="text-uppercase">Accept All</option> -->
+                                <option>1K</option>
+                                <option>2K</option>
+                                <option>3K</option>
+                                <option>4K</option>
+                                <option>5K</option>
+                                <option>6K</option>
+                                <option>7K</option>
+                                <option>8K</option>
+                                <option>9K</option>
+                                <option>10K</option>
+                                <option class="text-uppercase" value="custom">Custom</option>
+                                <!-- <option class="text-uppercase">Accept All</option> -->
                             </select>
-                                     <br>
+                            <br>
 
-                              <span id="customUserInput">Custom: <input type="number" id='customUserInputNumber' name="customUserInputNumber" class="userInputReq mb-3 text-center" required="" placeholder="Enter the followers count">
+                            <span id="customUserInput">Custom: <input type="number" id='customUserInputNumber' name="customUserInputNumber" class="userInputReq mb-3 text-center" required="" placeholder="Enter the followers count">
                               </span>
 
 
-                             <br>
-                            <input type="button" id="startAccepting" class="text-uppercase m-3 accept-req-btn" value="Start"> <!-- data-toggle="modal" data-target="#startAcceptingReq"  -->
-                          </form>
+                            <br>
 
-                <!-- Modal for pending request in progress-->
-                <div class="modal fade" id="startAcceptingReq" tabindex="-1" role="dialog" aria-labelledby="startAcceptingReqTitle"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content" style="
+
+                        <div id="counterBlock">
+                            <!--odometer-->
+                            <div id="odometer" class="odometer">0</div>
+                            <!--odometer end-->
+                            <!-- Modal for pending request in progress-->
+                            <div class="modal fade" id="startAcceptingReq" tabindex="-1" role="dialog" aria-labelledby="startAcceptingReqTitle">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content" style="
 background: #ffffffe1;">
-                        <div class="modal-body text-center">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            Please await while your followers are being accepted.
+                                        <div class="modal-body text-center">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                            Please await while your followers are being accepted.
 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+                        <div id="startBlock">
+                            <input type="button" id="startAccepting" class="text-uppercase m-3 accept-req-btn" value="Start"> <!-- data-toggle="modal" data-target="#startAcceptingReq"  -->
+                            <!-- Modal for pending request in progress ends-->
+                            <div class="card-body">
+                                <h2 class="card-title font-body"></h2>
+                                <h4 class="card-text font-body">Facing trouble? Reach out to us for any issues:</h4>
+                            </div>
+                            <div class="card-footer">
+                                <a href="mailto:Acceptmeinfo@gmail.com" class="btn pricing-btn" target="_blank">Send an email&nbsp;<i class="fas fa-envelope"></i></a>
+                                <a href="https://t.me/acceptmehelp" class="btn pricing-btn" target="_blank">Ping us on Telegram&nbsp;<i class="fab fa-telegram"></i></a>
+                            </div>
+                        </div>
+                        <!-- first contact  card end -->
                     </div>
+
                 </div>
+
             </div>
-            <!-- Modal for pending request in progress ends-->
-                    <div class="card-body">
-                                        <h2 class="card-title font-body"></h2>
-                    <h4 class="card-text font-body">Facing trouble? Reach out to us for any issues:</h4>
-                  </div>
-                  <div class="card-footer">
-                      <a href="mailto:Acceptmeinfo@gmail.com" class="btn pricing-btn" target="_blank">Send an email&nbsp;<i class="fas fa-envelope"></i></a>
-                      <a href="https://t.me/acceptmehelp" class="btn pricing-btn" target="_blank">Ping us on Telegram&nbsp;<i class="fab fa-telegram"></i></a>
-                  </div>
-                </div>
-                 <!-- first contact  card end -->
-
-
-              </div>
         </div>
+
     </div>
 
-</div>
-
-<div class="push"></div>
+    <div class="push"></div>
 
 </div>
 {% if not last_day == None %}
 <div class="farhaan">
-  <p>Your subscription will end in {{last_day}} day{% if last_day > 1 %}s{% endif %}.</p>
+    <p>Your subscription will end in {{last_day}} day{% if last_day > 1 %}s{% endif %}.</p>
 </div>
 {% endif %}
 <!--{% if last_day  %}-->
@@ -288,11 +188,11 @@ background: #ffffffe1;">
 <footer class="text-center footer">
     <a href="{{ url_for('core.index') }}" style="text-decoration: none">AcceptMe</a> <span class="color:#ffffff;">&copy; 2018</span>
 </footer>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 
 <script>
@@ -300,49 +200,49 @@ background: #ffffffe1;">
 if (typeof jQuery == 'undefined') {
   alert('jq not loaded');
 }
-/*
+
+function countercall(){
+var num = 0;
+    $.ajax({
+    type: 'POST',
+    url: '/request_accepted_count',
+        success: function(data){
+        alert(data);
+            odometer.innerHTML = data;
+        }
+    });
+}
+
 $(function(){
 	$('#startAccepting').click(function(e){
     alert('jq call');
     e.preventDefault();
+    $('#startBlock').css('display','none');
+    $('#counterBlock').css('display','block');
+
 		var noOfRequests= $('#customUserInputNumber').val();
 
-    jQuery.ajax({
-			url: '/accept_pending_requests',
-			data: { 'customUserInputNumber':noOfRequests
-			},
-			type: 'POST',
-			success: function(response){
-        alert('success');
-				//$('counter').val(response);
-			},
-			error: function(error){
-				console.log(error);
-			}
-		});
-    alert('a call done');
-    for(var i=0;i<=noOfRequests;i++){
-    //window.setInterval(
-      jQuery.ajax({
-        url: '/request_accepted_count',
-        data: [],
-        type: 'GET',
-        success: function(response){
-          alert(response);
-          $('counter').val(response);
-          i = response;
-        },
-        error: function(error){
-          console.log(error);
-        }
-      });
-    //, 250);
-    }
-    alert('2nd call done');
+    $.ajax({
+    xhr: function() {
+        var xhr = new window.XMLHttpRequest();
+       xhr.addEventListener("progress", function(evt) {
+           countercall();
+       }, false);
 
+       return xhr;
+    },
+    type: 'POST',
+    url: '/accept_pending_requests',
+	data: { 'customUserInputNumber':noOfRequests
+			},
+    success: function(data){
+        alert('working!!!');
+    }
+});
+    alert('a call done');
 	});
 });
-*/
+
 </script>
 
 <script>
@@ -357,58 +257,24 @@ $(function(){
         if(name=='custom')document.getElementById('customUserInput').innerHTML='Custom: <input type="number" id="customUserInputNumber" name="customUserInputNumber" class="userInputReq mb-3 text-center" required placeholder="Enter the followers count"/>';
         else document.getElementById('customUserInput').innerHTML='';
       }
-
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-$(document).ready(function(){
-  $("#startAccepting").click(function(e){
-  e.preventDefault();
-  
-  var noOfRequests= $('#customUserInputNumber').val();
+window.odometerOptions = {
+  auto: false, // Don't automatically initialize everything with class 'odometer'
+  selector: '.my-numbers', // Change the selector used to automatically find things to be animated
+  format: '(,ddd).dd', // Change how digit groups are formatted, and how many digits are shown after the decimal point
+  duration: 3000, // Change how long the javascript expects the CSS animation to take
+  theme: 'car', // Specify the theme (if you have more than one theme css file on the page)
+  animation: 'count' // Count is a simpler animation method which just increments the value,
+                     // use it when you're looking for something more subtle.
+};
 
-    alert('button clicked');
-        jQuery.ajax({
-    			url: '/accept_pending_requests',
-    			data: { 'customUserInputNumber':noOfRequests
-    			},
-    			type: 'POST',
-    			success: function(response){
-            alert('success');
-    				//$('counter').val(response);
-    			},
-    			error: function(error){
-    				console.log(error);
-    			}
-    		});
+//odometer.innerHTML = 10;
 
-        alert('a call done');
-
-        for(var i=0;i<=noOfRequests;i++){
-        //window.setInterval(
-          jQuery.ajax({
-            url: '/request_accepted_count',
-            data: [],
-            type: 'GET',
-            success: function(response){
-              alert(response);
-              $('counter').val(response);
-              i = response;
-            },
-            error: function(error){
-              console.log(error);
-            }
-          });
-        //, 250);
-        }
-        alert('2nd call done');
-
-    /*$.get("/accept_pending_requests", function(data, status){
-      alert("Data: " + data + "\nStatus: " + status);
-    });*/
-  });
-});
 </script>
+
+
 </body>
 </html>
