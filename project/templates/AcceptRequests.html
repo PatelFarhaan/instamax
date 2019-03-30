@@ -196,10 +196,11 @@ background: #ffffffe1;">
 
 
 <script>
-
+/*
 if (typeof jQuery == 'undefined') {
   alert('jq not loaded');
 }
+*/
 
 function countercall(){
 var num = 0;
@@ -207,7 +208,7 @@ var num = 0;
     type: 'POST',
     url: '/request_accepted_count',
         success: function(data){
-        alert(data);
+        //alert(data);
             odometer.innerHTML = data;
         }
     });
@@ -215,7 +216,7 @@ var num = 0;
 
 $(function(){
 	$('#startAccepting').click(function(e){
-    alert('jq call');
+    //alert('jq call');
     e.preventDefault();
     $('#startBlock').css('display','none');
     $('#counterBlock').css('display','block');
@@ -236,10 +237,9 @@ $(function(){
 	data: { 'customUserInputNumber':noOfRequests
 			},
     success: function(data){
-        alert('working!!!');
+        //alert('working!!!');
     }
 });
-    alert('a call done');
 	});
 });
 
