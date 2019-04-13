@@ -1,5 +1,6 @@
 venv
-__pycaache__
+__pycache__
 development.env
 instamax.pem
 new_instamax.pem
+__pycache__/
