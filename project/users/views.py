@@ -15,15 +15,14 @@ users_blueprint = Blueprint('users', __name__, template_folder='templates')
 
 @users_blueprint.route('/request_accepted_count', methods=['GET', 'POST'])
 def request_accepted_count():
-    print(str(session['request_accepted_counter']) + 'in request accepted count')
-    return str(session['request_accepted_counter'])
-    # return "5"
+    # print(str(session['request_accepted_counter']) + 'in request accepted count')
+    return str(session['request_accepted_counter_demo'])
 
 
 @login_required
 @users_blueprint.route('/accept_pending_requests', methods=['GET', 'POST'])
 def accept_pending_requests():
-    # import ipdb; ipdb.set_trace()
+
     if request.method == 'POST':
         try:
             no_of_request_to_accept = request.form['noOfFollowers']
@@ -131,7 +130,7 @@ def login():
 
         session['insta_username'] = instagram_username
         session['insta_password'] = instagram_password
-        session['request_accepted_counter'] = 0
+        session['request_accepted_counter_demo'] = 0
         insta_bot = InstagramBot(instagram_username, instagram_password)
         insta_login_response = insta_bot.login()
         insta_bot.closeBrowser()

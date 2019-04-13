@@ -135,6 +135,7 @@ class InstagramBot:
                         session['accepted_count'] = request_accept_count
                         # session['request_accepted_counter'] = i
                         session['request_accepted_counter'] = counter
+                        session['request_accepted_counter_demo'] = counter
                     time.sleep(4)
                     driver.find_element_by_xpath(
                         '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div').click()
@@ -157,6 +158,7 @@ class InstagramBot:
                         session['accepted_count'] = request_accept_count
                         # session['request_accepted_counter'] = i
                         session['request_accepted_counter'] = counter
+                        session['request_accepted_counter_demo'] = counter
                     return "{} Requests Accepted".format(request_accept_count)
 
                 except:
