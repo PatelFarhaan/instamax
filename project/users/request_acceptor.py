@@ -106,10 +106,10 @@ class InstagramBot:
     def accept_pending_requests(self, request_accept_count):
 
         driver = self.driver
-        # import ipdb; ipdb.set_trace()
         var1 = int(request_accept_count/15)
         var2 = request_accept_count%15
-        print("farhaan")
+        counter = 0
+
         try:
             if var1 > 0:
                 for j in range(0, var1):
@@ -131,9 +131,10 @@ class InstagramBot:
                         xpath_for_confirm = '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div/div[4]/div/div[1]/div/div[{count}]/div[3]/div/div[1]/button'.format(count=i)
                         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
                         time.sleep(0.5)
-
+                        counter+= 1
                         session['accepted_count'] = request_accept_count
-                        session['request_accepted_counter'] = i
+                        # session['request_accepted_counter'] = i
+                        session['request_accepted_counter'] = counter
                     time.sleep(4)
                     driver.find_element_by_xpath(
                         '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div').click()
@@ -154,7 +155,8 @@ class InstagramBot:
                         WebDriverWait(driver, 5).until(
                             EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
                         session['accepted_count'] = request_accept_count
-                        session['request_accepted_counter'] = i
+                        # session['request_accepted_counter'] = i
+                        session['request_accepted_counter'] = counter
                     return "{} Requests Accepted".format(request_accept_count)
 
                 except:
