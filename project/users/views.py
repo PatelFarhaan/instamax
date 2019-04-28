@@ -15,7 +15,7 @@ users_blueprint = Blueprint('users', __name__, template_folder='templates')
 @users_blueprint.route('/request_accepted_count', methods=['GET', 'POST'])
 def request_accepted_count():
     # print(str(session['request_accepted_counter']) + 'in request accepted count')
-    print(str(session['request_accepted_counter_demo']))
+    print("farhaan",str(session['request_accepted_counter_demo']))
     return str(session['request_accepted_counter_demo'])
 
 
@@ -56,8 +56,10 @@ def accept_pending_requests():
                 session['insta_username'],
                 session['insta_password'])
             insta_obj.login2()
-            counts = insta_obj.pending_request_count()
-            resp = ''
+            # counts = insta_obj.pending_request_count()
+            # resp = ''
+            counts = 500
+            instagram_accept_request_count = 1000
             try:
                 if counts <= instagram_accept_request_count:
                     insta_obj.accept_pending_requests(counts)
