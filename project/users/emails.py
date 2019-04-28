@@ -1,7 +1,7 @@
+from flask_mail import Message
+from project import mail
 import sys
 sys.path.append('../../')
-from project import mail
-from flask_mail import Message
 
 
 def password_reset_link(sender, recipient, link):

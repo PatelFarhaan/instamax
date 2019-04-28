@@ -13,7 +13,7 @@ class InstagramBot:
         self.username = username
         self.password = password
         self.options = webdriver.ChromeOptions()
-        self.options.add_argument('--headless')
+        # self.options.add_argument('--headless')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-extentions')
         self.options.add_argument('--enable-popup-blocking')
@@ -67,7 +67,10 @@ class InstagramBot:
             passworword_elem.send_keys(self.password)
             passworword_elem.send_keys(Keys.RETURN)
             try:
-                driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                try:
+                    driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                except:
+                    driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]').click()
             except:
                 pass
 
@@ -81,7 +84,10 @@ class InstagramBot:
         # import ipdb; ipdb.set_trace()
         try:
             time.sleep(2)
-            driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+            try:
+                driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+            except:
+                driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]').click()
         except:
             pass
         driver.find_element_by_xpath("/html/body/span/section/nav/div[2]/div/div/div[3]/div/div[2]/a/span").click()
@@ -110,11 +116,15 @@ class InstagramBot:
         var2 = request_accept_count%15
         counter = 0
 
+        # import ipdb; ipdb.set_trace()
         try:
             if var1 > 0:
                 for j in range(0, var1):
                     try:
-                        driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                        try:
+                            driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                        except:
+                            driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]').click()
                     except:
                         pass
 
@@ -145,7 +155,10 @@ class InstagramBot:
 
             if not var2 == 0:
                 try:
-                    driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                    try:
+                        driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                    except:
+                        driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]').click()
                 except:
                     pass
                 WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "M_9ka"))).click()

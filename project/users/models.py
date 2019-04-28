@@ -1,8 +1,8 @@
+from project import db, login_manager
+from flask_login import UserMixin
 import sys
 sys.path.append('../../')
 
-from flask_login import UserMixin
-from project import db, login_manager
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -20,7 +20,7 @@ class Users(UserMixin, db.Model):
     from_date = db.Column(db.DateTime, nullable=True)
     till_date = db.Column(db.DateTime, nullable=True)
 
-    def __init__(self,insta_username):
+    def __init__(self, insta_username):
         self.insta_username = insta_username
 
     def is_authenticated(self):
