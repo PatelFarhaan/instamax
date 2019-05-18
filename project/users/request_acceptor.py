@@ -1,12 +1,12 @@
 import time
+from project import db
 from flask import session
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from project.users.models import Users, Counter
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from project.users.models import Users, Counter
-from project import db
 
 
 class InstagramBot:
@@ -15,7 +15,7 @@ class InstagramBot:
         self.username = username
         self.password = password
         self.options = webdriver.ChromeOptions()
-        # self.options.add_argument('--headless')
+        self.options.add_argument('--headless')
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-extentions')
         self.options.add_argument('--enable-popup-blocking')
@@ -160,7 +160,6 @@ class InstagramBot:
                         pass
 
                     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "M_9ka"))).click()
-                    # import ipdb; ipdb.set_trace()
 
                     for i in range(1, 16):
 
@@ -210,4 +209,3 @@ class InstagramBot:
                     return "No request to accept"
         except:
             return "All requests Accepted"
-

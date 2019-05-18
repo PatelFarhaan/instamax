@@ -19,20 +19,17 @@ users_blueprint = Blueprint('users', __name__, template_folder='templates')
 @users_blueprint.route('/request_accepted_counter', methods=['GET', 'POST'])
 def request_accepted_counter():
     ctr="0"
+
     try:
-        # ctr = str(session["request_accepted_counter_demo"])
         counterval = Counter.query.filter_by(insta_username=session['insta_username']).first()
         if counterval is not None:
             ctr = str(counterval.counts)
     except:
         time.sleep(10)
-        ctr = "0" # str(session["request_accepted_counter_demo"])
+        ctr = "0"
 
-    counterval = None
-    
     if ctr == None:
         ctr = "0"
-    print("counter: ", ctr)
     return ctr
 
 
@@ -65,14 +62,15 @@ def accept_pending_requests():
             resp = "No request to accept"
 
         return resp, 200
+
     try:
         user = Users.query.filter_by(
             insta_username=session['insta_username']).first()
         till_date = user.till_date
         last_day = (till_date - datetime.datetime.utcnow()).days
+
     except BaseException:
         last_day = None
-    print(current_user.is_authenticated)
 
     countval = Counter.query.filter_by(insta_username=session['insta_username']).first()
     countval.counts = 0
@@ -84,8 +82,6 @@ def accept_pending_requests():
 
 @users_blueprint.route('/request_accepted_count/<int:num>', methods=['GET', 'POST'])
 def request_accepted_count(num):
-    print('in request_accepted_count')
-    print("farhaan",str(session['request_accepted_counter_demo']))
     counter = Counter.query.filter_by(insta_username=session['insta_username']).first()
     if counter is not None:
        ctr = counter.counts 
@@ -114,39 +110,6 @@ def live_counter():
         except BaseException:
             return render_template('LiveCounter.html')
     return render_template('LiveCounter.html')
-
-
-# @login_required
-# @users_blueprint.route('/request_acceptor_api', methods=['GET', 'POST'])
-# def request_acceptor():
-#
-#     import ipdb; ipdb.set_trace()
-#
-#     print("Inside request acceptor")
-#
-#     user = Users.query.filter_by(
-#         insta_username=session['insta_username']).first()
-#     instagram_accept_request_count = user.accept_request_count
-#     if instagram_accept_request_count[:-1] == 'K':
-#         instagram_accept_request_count = instagram_accept_request_count[:-1]
-#         instagram_accept_request_count = int(
-#             instagram_accept_request_count) * 1000
-#
-#     insta_obj = InstagramBot(
-#         session['insta_username'],
-#         session['insta_password'])
-#     insta_obj.login2()
-#     counts = session['insta_pending_req_count']
-#     print(counts)
-#     resp = 1000
-#     if counts < instagram_accept_request_count:
-#         resp = insta_obj.accept_pending_requests(counts)
-#     else:
-#         resp = insta_obj.accept_pending_requests(
-#             instagram_accept_request_count)
-#     insta_obj.closeBrowser()
-#
-#     return render_template('result.html', resp=resp)
 
 
 @users_blueprint.route('/login', methods=['GET', 'POST'])
@@ -215,13 +178,3 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('core.index'))
-
-
-@users_blueprint.route('/test')
-def test():
-    return render_template('result.html', last_day=2)
-
-
-@users_blueprint.route('/api_testing')
-def api_testing():
-    return render_template('acceptor_display.html')
