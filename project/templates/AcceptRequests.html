@@ -262,6 +262,7 @@ https://about.me/grohit -->
 
             setTimeout(function() {
                 for (var i = 0; i <= noOfRequests; i++) {
+                setTimeout(function() {
                     two = $.ajax({
                         type: "POST",
                         url: '/request_accepted_counter',
@@ -273,10 +274,13 @@ https://about.me/grohit -->
                             console.log(i + ' : ' + response);
                         }
                     });
+
+            }, 1000);
                 }
-            }, 100000);
+            }, 70000);
 
                 $.when(one, two).then(function () {
+                console.log("in wwhen");
                     $('.result').text('Successfully accepted requests');
                 });
             });

@@ -44,7 +44,11 @@ class InstagramBot:
             passworword_elem.send_keys(Keys.RETURN)
             time.sleep(2)
             try:
-                driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                try:
+                    time.sleep(2)
+                    driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+                except:
+                    driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]').click()
             except:
                 pass
             driver.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[1]/a/span').click()
@@ -53,8 +57,6 @@ class InstagramBot:
             return False
 
     def login2(self):
-        import ipdb; ipdb.set_trace()
-
         try:
             driver = self.driver
             driver.get("https://www.instagram.com/")
@@ -83,8 +85,19 @@ class InstagramBot:
 
 
     def pending_request_count(self):
+
         driver = self.driver
-        import ipdb; ipdb.set_trace()
+
+        try:
+            try:
+                time.sleep(2)
+                driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
+            except:
+                time.sleep(2)
+                driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]').click()
+        except:
+            pass
+
         try:
             time.sleep(2)
             try:
@@ -113,7 +126,7 @@ class InstagramBot:
 
 
     def accept_pending_requests(self, request_accept_count):
-        import ipdb; ipdb.set_trace()
+
         print('in pending requests')
         driver = self.driver
         var1 = int(request_accept_count/15)
@@ -147,34 +160,31 @@ class InstagramBot:
                         pass
 
                     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "M_9ka"))).click()
+                    # import ipdb; ipdb.set_trace()
 
                     for i in range(1, 16):
 
                         xpath_for_confirm = '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div/div[4]/div/div[1]/div/div[{count}]/div[3]/div/div[1]/button'.format(count=i)
                         WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
-                        time.sleep(0.5)
+                        time.sleep(0.7)
                         counter+= 1
-                        # session['accepted_count'] = request_accept_count
 
                         try:
-                            countval.counts = request_accept_count
+                            countval.counts = counter
                             db.session.commit()
                         except:
                             i = i
                             time.sleep(0.05)
+
                         session.modified = True
                         time.sleep(0.05)
-                        print('set: ', request_accept_count)
-                        # this is not printing
+                        print('set: ', counter)
 
 
-                        # session['request_accepted_counter'] = counter
-                        # session['request_accepted_counter_demo'] = counter
                     time.sleep(4)
                     driver.find_element_by_xpath(
                         '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div').click()
 
-                print(request_accept_count)
                 return "{} Requests Accepted".format(request_accept_count)
 
 
@@ -193,10 +203,7 @@ class InstagramBot:
                             count=i)
                         WebDriverWait(driver, 5).until(
                             EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
-                        # session['accepted_count'] = request_accept_count
-                        # session['request_accepted_counter'] = i
-                        # session['request_accepted_counter'] = counter
-                        # session['request_accepted_counter_demo'] = counter
+
                     return "{} Requests Accepted".format(request_accept_count)
 
                 except:
@@ -204,96 +211,3 @@ class InstagramBot:
         except:
             return "All requests Accepted"
 
-    # def accept_pending_requests(self, request_accept_count):
-    #
-    #     driver = self.driver
-    #     var1 = int(request_accept_count/15)
-    #     var2 = request_accept_count%15
-    #     counter = 0
-    #
-    #     # import ipdb; ipdb.set_trace()
-    #
-    #     db.isolation_level = None
-    #     countval = Counter.query.filter_by(insta_username=session['insta_username']).first()
-    #
-    #     if countval is None:
-    #         newcounts = Counter(insta_username = session['insta_username'])
-    #         db.session.add(newcounts)
-    #         db.session.commit()
-    #         countval = Counter.query.filter_by(insta_username=session['insta_username']).first()
-    #
-    #     for i in range(request_accept_count+1):
-    #         # print(i)
-    #         # if (i % 5 == 0):
-    #         # session["request_accepted_counter_demo"] = i
-    #         try:
-    #             countval.counts = i
-    #             db.session.commit()
-    #         except:
-    #             i = i
-    #             time.sleep(0.05)
-    #         session.modified = True
-    #         time.sleep(0.05)
-    #         print('set: ', i)
-    #
-    #     # try:
-        #     if var1 > 0:
-        #         for j in range(0, var1):
-        #             try:
-        #                 try:
-        #                     driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
-        #                 except:
-        #                     driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]').click()
-        #             except:
-        #                 pass
-        #
-        #             try:
-        #                 driver.find_element_by_xpath(
-        #                     "/html/body/span/section/nav/div[2]/div/div/div[3]/div/div[2]/a/span").click()
-        #             except:
-        #                 pass
-        #
-        #             WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "M_9ka"))).click()
-        #
-        #             for i in range(1, 16):
-        #
-        #                 xpath_for_confirm = '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div/div[4]/div/div[1]/div/div[{count}]/div[3]/div/div[1]/button'.format(count=i)
-        #                 WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
-        #                 time.sleep(0.5)
-        #                 counter+= 1
-        #                 session['accepted_count'] = request_accept_count
-        #                 # session['request_accepted_counter'] = i
-        #                 session['request_accepted_counter'] = counter
-        #                 session['request_accepted_counter_demo'] = counter
-        #             time.sleep(4)
-        #             driver.find_element_by_xpath(
-        #                 '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div').click()
-        #
-        #         print(request_accept_count)
-        #         return "{} Requests Accepted".format(request_accept_count)
-        #
-        #     if not var2 == 0:
-        #         try:
-        #             try:
-        #                 driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]').click()
-        #             except:
-        #                 driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]').click()
-        #         except:
-        #             pass
-        #         WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.CLASS_NAME, "M_9ka"))).click()
-        #         try:
-        #             for i in range(1, var2+1):
-        #                 xpath_for_confirm = '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[2]/div/div/div[4]/div/div[1]/div/div[{count}]/div[3]/div/div[1]/button'.format(
-        #                     count=i)
-        #                 WebDriverWait(driver, 5).until(
-        #                     EC.presence_of_element_located((By.XPATH, xpath_for_confirm))).click()
-        #                 session['accepted_count'] = request_accept_count
-        #                 # session['request_accepted_counter'] = i
-        #                 session['request_accepted_counter'] = counter
-        #                 session['request_accepted_counter_demo'] = counter
-        #             return "{} Requests Accepted".format(request_accept_count)
-        #
-        #         except:
-        #             return "No request to accept"
-        # except:
-        #     return "All requests Accepted"
