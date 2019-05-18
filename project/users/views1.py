@@ -1,49 +1,41 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
 from flask_login import login_required, login_user, logout_user, current_user
 from project.users.request_acceptor import InstagramBot
-from project.users.models import Users, Counter
+from project.users.models import Users
 import requests
 import datetime
 from project import db
 import sys
-from datetime import timedelta
-import time
+# from flask_session import Session
 
+# from concurrent.futures import ThreadPoolExecutor
 
 sys.path.append('../../')
 
-
+# executor = ThreadPoolExecutor(2)
+# session['request_accepted_counter_demo'] = 1
 users_blueprint = Blueprint('users', __name__, template_folder='templates')
-
 
 @users_blueprint.route('/request_accepted_counter', methods=['GET', 'POST'])
 def request_accepted_counter():
-    ctr="0"
-    try:
-        # ctr = str(session["request_accepted_counter_demo"])
-        counterval = Counter.query.filter_by(insta_username=session['insta_username']).first()
-        if counterval is not None:
-            ctr = str(counterval.counts)
-    except:
-        time.sleep(10)
-        ctr = "0" # str(session["request_accepted_counter_demo"])
+    print('in request_accepted_counter')
+    ctr = str(session["request_accepted_counter_demo"])
+    print("session count: ", ctr)
+    return ctr, 200
 
-    counterval = None
-    
-    if ctr == None:
-        ctr = "0"
-    print("counter: ", ctr)
-    return ctr
 
+@users_blueprint.route('/request_accepted_count/<int:num>', methods=['GET', 'POST'])
+def request_accepted_count(num):
+    print('in request_accepted_count')
+    print("farhaan",str(session['request_accepted_counter_demo']))
+    return render_template('request_accepted_count.html', num=num)
+    # , str(session['request_accepted_counter_demo'])
 
 @login_required
 @users_blueprint.route('/accept_pending_requests', methods=['GET', 'POST'])
 def accept_pending_requests():
     # import ipdb; ipdb.set_trace()
-    # session['request_accepted_counter_demo'] = 0
-
-    import ipdb; ipdb.set_trace()
-
+    session['request_accepted_counter_demo'] = 0
     if request.method == 'POST':
         resp = 'Success'
         custom_number = request.form['customUserInputNumber']
@@ -52,53 +44,48 @@ def accept_pending_requests():
         except:
             custom_number = int(custom_number[:-1])
 
-
-        print("The custom number of requests acceptor is : ", custom_number)
-
-        # if int(custom_number) > 0:
-        #     user = Users.query.filter_by(
-        #         insta_username=session['insta_username']).first()
-        #     user.accept_request_count = int(custom_number)
-        #     db.session.commit()
-        # else:
-        #     pass
-        # print("inside func")
-        # is_subscribed = user.is_subscribed
-        # if is_subscribed:
-        #     user = Users.query.filter_by(
-        #         insta_username=session['insta_username']).first()
-        #     instagram_accept_request_count = user.accept_request_count
-        #     if instagram_accept_request_count[:-1] == 'K':
-        #         instagram_accept_request_count = instagram_accept_request_count[:-1]
-        #         instagram_accept_request_count = int(
-        #             instagram_accept_request_count) * 1000
-        #     else:
-        #         instagram_accept_request_count = int(
-        #             instagram_accept_request_count)
-
-        insta_obj = InstagramBot(
-            session['insta_username'],
-            session['insta_password'])
-        insta_obj.login2()
-        counts = insta_obj.pending_request_count()
-        
-            # resp = ''
-
-        counts = custom_number
-        instagram_accept_request_count = 500
-        # import ipdb; ipdb.set_trace()
-        try:
-            if counts <= instagram_accept_request_count:
-                insta_obj.accept_pending_requests(counts)
+        if int(custom_number) > 0:
+            user = Users.query.filter_by(
+                insta_username=session['insta_username']).first()
+            user.accept_request_count = int(custom_number)
+            db.session.commit()
+        else:
+            pass
+        print("inside func")
+        is_subscribed = user.is_subscribed
+        if is_subscribed:
+            user = Users.query.filter_by(
+                insta_username=session['insta_username']).first()
+            instagram_accept_request_count = user.accept_request_count
+            if instagram_accept_request_count[:-1] == 'K':
+                instagram_accept_request_count = instagram_accept_request_count[:-1]
+                instagram_accept_request_count = int(
+                    instagram_accept_request_count) * 1000
             else:
-                insta_obj.accept_pending_requests(instagram_accept_request_count)
-        except:
-            resp = "No request to accept"
-            # insta_obj.closeBrowser()
-        return resp, 200
+                instagram_accept_request_count = int(
+                    instagram_accept_request_count)
 
-        # else:
-        #     return redirect(url_for('core.pricing'))
+            insta_obj = InstagramBot(
+                session['insta_username'],
+                session['insta_password'])
+            insta_obj.login2()
+            # counts = insta_obj.pending_request_count()
+            # resp = ''
+            counts = 500
+            instagram_accept_request_count = 1000
+            try:
+                if counts <= instagram_accept_request_count:
+                    insta_obj.accept_pending_requests(counts)
+                else:
+                    insta_obj.accept_pending_requests(
+                        instagram_accept_request_count)
+            except:
+                resp = "No request to accept"
+            insta_obj.closeBrowser()
+            return resp, 200
+
+        else:
+            return redirect(url_for('core.pricing'))
     try:
         user = Users.query.filter_by(
             insta_username=session['insta_username']).first()
@@ -109,18 +96,6 @@ def accept_pending_requests():
     print(current_user.is_authenticated)
     return render_template(
         'AcceptRequests.html', instagram_username=session['insta_username'], last_day=last_day)
-
-
-@users_blueprint.route('/request_accepted_count/<int:num>', methods=['GET', 'POST'])
-def request_accepted_count(num):
-    print('in request_accepted_count')
-    print("farhaan",str(session['request_accepted_counter_demo']))
-    counter = Counter.query.filter_by(insta_username=session['insta_username']).first()
-    if counter is not None:
-       ctr = counter.counts 
-
-    return render_template('request_accepted_count.html', num=ctr)
-    # , str(session['request_accepted_counter_demo'])
 
 
 @users_blueprint.route('/live_counter', methods=['GET', 'POST'])
@@ -159,19 +134,18 @@ def request_acceptor():
         instagram_accept_request_count = int(
             instagram_accept_request_count) * 1000
 
-    # insta_obj = InstagramBot(
-    #     session['insta_username'],
-    #     session['insta_password'])
-    # insta_obj.login2()
+    insta_obj = InstagramBot(
+        session['insta_username'],
+        session['insta_password'])
+    insta_obj.login2()
     counts = session['insta_pending_req_count']
     print(counts)
-    resp = 1000
-    # if counts < instagram_accept_request_count:
-    #     resp = insta_obj.accept_pending_requests(counts)
-    # else:
-    #     resp = insta_obj.accept_pending_requests(
-    #         instagram_accept_request_count)
-    # insta_obj.closeBrowser()
+    if counts < instagram_accept_request_count:
+        resp = insta_obj.accept_pending_requests(counts)
+    else:
+        resp = insta_obj.accept_pending_requests(
+            instagram_accept_request_count)
+    insta_obj.closeBrowser()
 
     return render_template('result.html', resp=resp)
 
@@ -187,13 +161,13 @@ def login():
         session['insta_username'] = instagram_username
         session['insta_password'] = instagram_password
         session['request_accepted_counter_demo'] = 0
-        # insta_bot = InstagramBot(instagram_username, instagram_password)
-        insta_login_response = True # insta_bot.login()
-        # insta_bot.closeBrowser()
+        insta_bot = InstagramBot(instagram_username, instagram_password)
+        insta_login_response = insta_bot.login()
+        insta_bot.closeBrowser()
 
-        # if insta_login_response == False:
-        #     msg = 'Invalid Credentails'
-        #     return render_template('index.html', msg=msg)
+        if insta_login_response == False:
+            msg = 'Invalid Credentails'
+            return render_template('index.html', msg=msg)
 
         if insta_login_response:
             user_obj = Users.query.filter_by(
@@ -205,8 +179,7 @@ def login():
 
         user = Users.query.filter_by(insta_username=instagram_username).first()
         if insta_login_response and user is not None:
-            user.is_subscribed = True
-            user.till_date = datetime.datetime.utcnow() + timedelta(days=1)
+
             if user.is_subscribed:
                 if datetime.datetime.utcnow() < user.till_date:
                     ok = login_user(user)

@@ -31,8 +31,7 @@ https://about.me/grohit -->
     <link rel="stylesheet" href="../static/acceptmestyling.css">
 
     <!-- Odometr includes -->
-    <link rel="stylesheet" href="http://github.hubspot.com/odometer/themes/odometer-theme-default.css" />
-    <!-- default theme -->
+    <link rel="stylesheet" href="http://github.hubspot.com/odometer/themes/odometer-theme-default.css" /><!-- default theme -->
 
     <script src="http://github.hubspot.com/odometer/odometer.js"></script>
 
@@ -124,36 +123,32 @@ https://about.me/grohit -->
                                 you want to accept.</label> <br>
                             <select name="noOfFollowers" class="form-control mb-3" id="FormControlSelectFollowersNo"
                                 onchange="showfield(this.options[this.selectedIndex].value)">
-                                <option value="1000">1K</option>
-                                <option value="2000">2K</option>
-                                <option value="3000">3K</option>
-                                <option value="4000">4K</option>
-                                <option value="5000">5K</option>
-                                <option value="6000">6K</option>
-                                <option value="7000">7K</option>
-                                <option value="8000">8K</option>
-                                <option value="9000">9K</option>
-                                <option value="10000">10K</option>
+                                <option>1K</option>
+                                <option>2K</option>
+                                <option>3K</option>
+                                <option>4K</option>
+                                <option>5K</option>
+                                <option>6K</option>
+                                <option>7K</option>
+                                <option>8K</option>
+                                <option>9K</option>
+                                <option>10K</option>
                                 <option class="text-uppercase" value="custom">Custom</option>
                                 <!-- <option class="text-uppercase">Accept All</option> -->
                             </select>
                             <br>
 
-                            <span id="customUserInput">
+                            <span id="customUserInput" >
 
                             </span>
-                            <br>
+                             <br>
 
-                            <div id="counterBlock">
-                                <!--odometer-->
-                                <div id="odometer" class="odometer">0</div>
-                            </div>
-                            <div id="counter_no">
+                            <div id="counter_response">
 
                             </div>
 
 
-                            <!-- <iframe id="counteriframe" src="" height="100" width="300" border="0" scroll="auto"></iframe> -->
+<iframe id="counteriframe" src="" height="100" width="300" border="0" scroll="auto"></iframe>
 
                             <div id="startBlock">
                                 <input type="button" id="startAccepting" class="text-uppercase m-3 accept-req-btn"
@@ -168,7 +163,7 @@ https://about.me/grohit -->
                                         an email&nbsp;<i class="fas fa-envelope"></i></a>
                                     <a href="https://t.me/acceptmehelp" class="btn pricing-btn" target="_blank">Ping us
                                         on Telegram&nbsp;<i class="fab fa-telegram"></i></a>
-                                </div>
+                                </div>customUserInputNumber
                             </div>
                             <!-- first contact  card end -->
                         </div>
@@ -229,9 +224,6 @@ https://about.me/grohit -->
             }
         }*/
 
-        var two = "";
-        var noOfRequests = 0;
-
         $(function () {
             $('#startAccepting').click(function (e) {
                 //alert('jq call');
@@ -239,45 +231,42 @@ https://about.me/grohit -->
                 $('#startBlock').css('display', 'none');
                 $('#counterBlock').css('display', 'block');
 
-                if ($('#FormControlSelectFollowersNo').val() != "custom") {
-                    noOfRequests = $('#FormControlSelectFollowersNo').val();
-                    $('#customUserInputNumber').val(noOfRequests);
-                } else {
-                    noOfRequests = $('#customUserInputNumber').val();
+                var noOfRequests = 0;
+
+                if($('#FormControlSelectFollowersNo').val()!="custom"){
+                  noOfRequests = $('#FormControlSelectFollowersNo').val();
+                }else{
+                  noOfRequests = $('#customUserInputNumber').val();
                 }
 
-                function callback(response) {
-                    if(response != "Success" && response != "0")
-                        $('#odometer').html(response);
-                }
+                $('#counteriframe').attr('src','/request_accepted_count/1000');
 
-                var one = $.ajax({
-                    type: "POST",
-                    url: '/accept_pending_requests',
-                    data: {
-                        'customUserInputNumber': noOfRequests
-                    },
-                    success: callback
-                });
+                $.ajax({
+                  type: 'POST',
+                  url: '/accept_pending_requests',
+                  data: {
+                      'customUserInputNumber': noOfRequests
+                  },/*
+                    xhr: function () {
+                      //countercall(noOfRequests);
+                      //  alert('in xhr function');
 
-            setTimeout(function() {
-                for (var i = 0; i <= noOfRequests; i++) {
-                    two = $.ajax({
-                        type: "POST",
-                        url: '/request_accepted_counter',
-                        data: { html: '<p>0</p>' },
-                        success: function(response)
-                        {
-                            i = response;
-                            callback(response);
-                            console.log(i + ' : ' + response);
-                        }
-                    });
-                }
-            }, 100000);
+                        var xhr = new window.XMLHttpRequest();
 
-                $.when(one, two).then(function () {
-                    $('.result').text('Successfully accepted requests');
+                        xhr.addEventListener("progress", function (evt) {
+                          alert('in progress in ajax');
+                          if (evt.lengthComputable) {
+                            var percentComplete = evt.loaded / evt.total;
+                            console.log(percentComplete);
+                          }
+                        }, false);
+
+                        return xhr;
+                    },*/
+                    success: function (data) {
+                        alert('working!!!');
+                        $('#counter_response').html("<h3 style='color:white'>" +data+"</h3>");
+                    }
                 });
             });
         });

@@ -28,18 +28,3 @@ class Users(UserMixin, db.Model):
 
     def __str__(self):
         return self.insta_username
-
-
-class Counter(db.Model):
-    __tablename__ = "counter"
-
-    id = db.Column(db.Integer, primary_key=True)
-    insta_username = db.Column(db.String(100), unique=True, index=True)
-    counts = db.Column(db.Integer)
-
-    def __init__(self, insta_username=None, counts=None):
-        self.insta_username = insta_username
-        self.counts = counts
-
-    def __repr__(self):
-        return '%r' % (self.counts)
