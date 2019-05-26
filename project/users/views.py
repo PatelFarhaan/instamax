@@ -18,18 +18,30 @@ users_blueprint = Blueprint('users', __name__, template_folder='templates')
 
 @users_blueprint.route('/request_accepted_counter', methods=['GET', 'POST'])
 def request_accepted_counter():
-    ctr="0"
-
     try:
-        counterval = Counter.query.filter_by(insta_username=session['insta_username']).first()
-        if counterval is not None:
-            ctr = str(counterval.counts)
+        if Counter:
+            counterval = Counter.query.filter_by(insta_username=session['insta_username']).first()
     except:
-        time.sleep(10)
+        time.sleep(0.10)
         ctr = "0"
+    # except sqlite3.OperationalError as e:
+    #     print('[-] Sqlite operational error: {} Retrying...'.format(e))
+    #     ctr = "0"
+    # except sqlite3.InterfaceError as e:
+    #     print('[-] Sqlite interface error: {} Retrying...'.format(e))
+    #     ctr = "0"
+    # except sqlite3.Error:
+    #     # time.sleep(0.10)
+    #     ctr = "0"  # str(session["request_accepted_counter_demo"])
+
+    if counterval is not None:
+        ctr = str(counterval.counts)
+
+    counterval = None
 
     if ctr == None:
         ctr = "0"
+    print("counter: ", ctr)
     return ctr
 
 
@@ -73,6 +85,13 @@ def accept_pending_requests():
         last_day = None
 
     countval = Counter.query.filter_by(insta_username=session['insta_username']).first()
+
+    if countval is None:
+        newcounts = Counter(insta_username=session['insta_username'])
+        db.session.add(newcounts)
+        db.session.commit()
+        countval = Counter.query.filter_by(insta_username=session['insta_username']).first()
+
     countval.counts = 0
     db.session.commit()
 
@@ -145,9 +164,6 @@ def login():
             if user.is_subscribed:
                 if datetime.datetime.utcnow() < user.till_date:
                     ok = login_user(user)
-                    print(ok)
-                    print("subscribed")
-                    print(current_user.is_authenticated())
                     next = request.args.get('next')
 
                     if next is None or not next[0] == '/':
@@ -163,8 +179,6 @@ def login():
                         db.session.commit()
                 except BaseException:
                     ok = login_user(user)
-                    print(ok)
-                    print("Not subscribed")
                     next = request.args.get('next')
                     if next is None or not next[0] == '/':
                         next = url_for('core.pricing')

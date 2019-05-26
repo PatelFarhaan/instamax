@@ -196,9 +196,7 @@ https://about.me/grohit -->
     </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
         crossorigin="anonymous"></script>
@@ -231,6 +229,7 @@ https://about.me/grohit -->
 
         var two = "";
         var noOfRequests = 0;
+                var resp = 1;
 
         $(function () {
             $('#startAccepting').click(function (e) {
@@ -261,26 +260,34 @@ https://about.me/grohit -->
                 });
 
             setTimeout(function() {
-                for (var i = 0; i <= noOfRequests; i++) {
-                setTimeout(function() {
-                    two = $.ajax({
-                        type: "POST",
-                        url: '/request_accepted_counter',
-                        data: { html: '<p>0</p>' },
-                        success: function(response)
-                        {
-                            i = response;
-                            callback(response);
-                            console.log(i + ' : ' + response);
-                        }
-                    });
+                console.log("in tiiiiimeout 1: " + noOfRequests);
 
-            }, 1000);
+                for (var i = 0; i <= noOfRequests; i++) {
+                    //////////setInterval(function() {
+                        //console.log("in tiiiiimeout 2");
+                        two = $.ajax({
+                            type: "POST",
+                            url: '/request_accepted_counter',
+                            data: { html: '<p>0</p>' },
+                            success: function(response)
+                            {
+                                i = response;
+                                resp = response;
+                                callback(response);
+                                console.log("success: "+i + ' : ' + response);
+                            },
+                            fail: function(xhr, textStatus, errorThrown){
+                                i = resp;
+                                console.log(i + ' : ' + resp  + ' : ' + errorThrown);
+                            }
+                        });
+                    //}, 5000);
                 }
-            }, 70000);
+                //clearInterval(interval);
+            }, 40000);
 
                 $.when(one, two).then(function () {
-                console.log("in wwhen");
+                    console.log("in wwhen");
                     $('.result').text('Successfully accepted requests');
                 });
             });
