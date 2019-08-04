@@ -8,6 +8,7 @@ from project.users.models import Users, Counter
 from project.users.request_acceptor import InstagramBot
 from flask_login import login_required, login_user, logout_user, current_user
 from flask import Blueprint, render_template, redirect, url_for, request, session
+import memcache
 
 
 sys.path.append('../../')
@@ -184,6 +185,8 @@ def login():
                         next = url_for('core.pricing')
                     return redirect(next)
 
+        client = memcache.Client([('12.0.0.1', 11211)])
+        client.set(instagram_username, 0)
     return render_template('index.html')
 
 
