@@ -79,25 +79,24 @@
       alert('jq not loaded');
     }
     */
+//    function update_counter() {
+//        $.ajax({
+//          type: 'GET',
+//          url: '/request_accepted_counter',
+//          success: function (data) {
+//              $('#odometer').text(data);
+//              i=data;
+//          }
+//      });
+//    }
 
-    $(function () {
-      alert('in countercall');
-          //alert(i);
-          window.setTimeout(function(){
-            for(i=0;i<{{ num }};i++){
-
-              $.ajax({
-                  type: 'GET',
-                  url: '/request_accepted_counter',
-                  success: function (data) {
-                      //alert(i + ' : ' + data);
-                      $('#odometer').text(data);
-                      i=data;
-                  }
-              });
-            }
-          }, 10000);
-    });
+//    $(function () {
+//      alert('in countercall');
+//          //alert(i);
+//          window.setTimeout(function(){
+//              setInterval(function(){ update_counter(); }, 3000);
+//          }, 100000);
+//    });
     </script>
 
     </body>
