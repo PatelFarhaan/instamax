@@ -6,20 +6,74 @@
 
 ## Install Psql verions :
 	sudo apt-get install postgresql postgresql-contrib -y
+## Now create a superuser for PostgreSQL
+
+    sudo -u postgres createuser --superuser **name_of_user**
+    sudo -u postgres createuser --superuser postgres
+
+
+## And create a database using created user account
+
+    sudo -u postgres createdb instamax
+
+## You can access created database with created user by,
+
+    psql -U name_of_user -d name_of_database
+
+
+    ex: psql -U postgres -d instamax
+
+
+
 
 ## Switch over to the postgres account on your server by typing:
 	sudo -i -u postgres
 
 	Or
+
 ## Accessing a Postgres Prompt Without Switching Accounts
 	sudo -u postgres psql
+
+	sudo service postgresql status
+
+## Password change ;
+    ALTER USER postgres WITH PASSWORD Farees143k
 
 ## start psql client using 
 	psql
 
-## Change postgres User password 
+    createdb -h localhost -p 5432 -U postgres instamax
 
-	-> ALTER USER postgres PASSWORD 'NEW PASSWORD';
+
+
+## Change postgres User password
+
+    login to database
+
+    $ sudo -u postgres psql instamax
+
+	update Password
+
+	-> ALTER USER postgres WITH PASSWORD 'Farees143k';
+
+# Install Python3 Client:
+
+    sudo apt-get install python3-pip
+
+# Install virtual env:
+
+    sudo apt-get install python-virtualenv
+
+## It time to create to virtual environment flask-env, where we will install flask.
+
+    virtualenv venv
+
+
+
+
+# Install unzip:
+
+    sudo apt-get install unzip
 
 # Unzip chrome file:
     unzip chromedriver_linux64.zip
@@ -61,3 +115,4 @@
 
 
 
+	sudo apt-get install nginx uwsgi uwsgi-plugin-python

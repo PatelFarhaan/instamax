@@ -12,4 +12,4 @@ def admin_password_add():
     db.session.commit()
     return "True"
 
-admin_password_add()
+print(admin_password_add())
