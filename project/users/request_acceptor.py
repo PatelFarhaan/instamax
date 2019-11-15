@@ -95,10 +95,15 @@ class InstagramBot:
                     button_1 = driver.find_element_by_xpath('/html/body/div[2]/div/div/div[3]/button[2]')
                     button_1.click()
                 except Exception as error_2:
-                    print("Login Error 2", str(error_2))
-                    # pdb.set_trace()
-                    button_2=driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]')
-                    button_2.click()
+                    btn_inside = driver.find_element_by_xpath('//a[@href="/explore/"]')
+                    size_check = btn_inside.size
+                    if isinstance(size_check, dict):
+                        print("No error logged in Successfully")
+                    else:
+                        print("Login Error 2", str(error_2))
+                        # pdb.set_trace()
+                        button_2=driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]')
+                        button_2.click()
             except Exception as error_1:
                 print("Login Error 1", str(error_1))
 
