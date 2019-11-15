@@ -7,88 +7,125 @@ from datetime import timedelta
 from project.users.models import Users, Counter
 from project.users.request_acceptor import InstagramBot
 from flask_login import login_required, login_user, logout_user, current_user
-from flask import Blueprint, render_template, redirect, url_for, request, session
+from flask import Blueprint, render_template, redirect, url_for, request, session, make_response, jsonify
 import memcache
-
+import pdb
+import math
+# from project import LOGGER_DEBUG
 
 sys.path.append('../../')
-
+client = memcache.Client([('127.0.0.1', 11211)])
 
 users_blueprint = Blueprint('users', __name__, template_folder='templates')
 
 
 @users_blueprint.route('/request_accepted_counter', methods=['GET', 'POST'])
 def request_accepted_counter():
+    ctr, counterval=None, None
+    total_request = 0
+    failed_request = 0
+    is_complete = False
     try:
-        if Counter:
+        instagram_username = session['insta_username']
+        total_request = client.get("total_request_to_accept" + instagram_username)
+        failed_request = client.get("total_failed_requests" + instagram_username)
+
+        failed_request = 0 if failed_request is None else failed_request
+        total_request = 0 if total_request is None else total_request
+
+        ctr=client.get(session["insta_username"])
+        print("ctr",session["insta_username"], ctr)
+        if ctr is not None:
+            if total_request == ctr + failed_request:
+                is_complete=True
+            print("ctr -> ", ctr)
+        elif Counter:
             counterval = Counter.query.filter_by(insta_username=session['insta_username']).first()
-    except:
-        time.sleep(0.10)
-        ctr = "0"
-    # except sqlite3.OperationalError as e:
-    #     print('[-] Sqlite operational error: {} Retrying...'.format(e))
-    #     ctr = "0"
-    # except sqlite3.InterfaceError as e:
-    #     print('[-] Sqlite interface error: {} Retrying...'.format(e))
-    #     ctr = "0"
-    # except sqlite3.Error:
-    #     # time.sleep(0.10)
-    #     ctr = "0"  # str(session["request_accepted_counter_demo"])
+    except Exception as error:
+        print("Not able to get count ", error)
+        time.sleep(1)
 
-    if counterval is not None:
-        ctr = str(counterval.counts)
-
-    counterval = None
+    if ctr == None and counterval is not None:
+        ctr = counterval.counts
 
     if ctr == None:
-        ctr = "0"
-    print("counter: ", ctr)
-    return ctr
+        ctr = 0
+    return make_response(jsonify({'successful': ctr, "failed":failed_request, "isComplete": is_complete, "total":total_request}), 200)
 
 
 @login_required
 @users_blueprint.route('/accept_pending_requests', methods=['GET', 'POST'])
-def accept_pending_requests():
-
+def accept_pending_requests(context=None):
+    instagram_username = session.get("insta_username", '')
     if request.method == 'POST':
         resp = 'Success'
+        MAX_RESULT_SIZE = 1000
         custom_number = request.form['customUserInputNumber']
+
+        client.set("total_request_to_accept"+instagram_username, custom_number)
+
+        # skip = int(request.form.get("skip", 990))
+        # print("skip", skip, custom_number)
+        skip = 0
         try:
             custom_number = int(custom_number)
         except:
             custom_number = int(custom_number[:-1])
 
-        insta_obj = InstagramBot(
-            session['insta_username'],
-            session['insta_password'])
-        insta_obj.login2()
-        counts = insta_obj.pending_request_count()
+        insta_obj = InstagramBot(session['insta_username'], session['insta_password'])
 
-        instagram_accept_request_count = custom_number
+        insta_obj.login(False)
 
-        try:
-            if counts <= instagram_accept_request_count:
-                insta_obj.accept_pending_requests(counts)
+        remaining_records_to_process = custom_number
+        record_processed = 0
+
+        for x in range(0, custom_number, MAX_RESULT_SIZE):
+            new_list_of_records=insta_obj.get_pending_request_details()
+            print("Got total Items ", len(new_list_of_records))
+
+            if x == 0 and len(new_list_of_records)==0:
+                resp = "No request to accept"
+
+            if remaining_records_to_process >= MAX_RESULT_SIZE:
+                insta_obj.start_accepting_request(new_list_of_records[skip:MAX_RESULT_SIZE])
+                remaining_records_to_process -= MAX_RESULT_SIZE
+                record_processed += MAX_RESULT_SIZE
             else:
-                insta_obj.accept_pending_requests(instagram_accept_request_count)
-        except:
-            resp = "No request to accept"
+                sub_list = new_list_of_records[:remaining_records_to_process]
+                insta_obj.start_accepting_request(sub_list)
+                record_processed += len(sub_list)
+                print("total Hits done ", record_processed)
+                record_processed_local = client.get(session['insta_username'])
+                resp = "Request accepted Count {}".format(record_processed_local)
+                print(resp)
+                # return resp, 200
 
+        # pdb.set_trace()
+        insta_obj.closeBrowser()
         return resp, 200
+        # counts = insta_obj.pending_request_count()
+        # instagram_accept_request_count = custom_number
+        # try:
+        #     if counts <= instagram_accept_request_count:
+        #         insta_obj.accept_pending_requests(counts)
+        #     else:
+        #         insta_obj.accept_pending_requests(instagram_accept_request_count)
+        # except:
+        #     resp = "No request to accept"
+        # return resp, 200
 
     try:
-        user = Users.query.filter_by(
-            insta_username=session['insta_username']).first()
+        user = Users.query.filter_by( insta_username=session['insta_username']).first()
         till_date = user.till_date
         last_day = (till_date - datetime.datetime.utcnow()).days
 
     except BaseException:
         last_day = None
 
-    countval = Counter.query.filter_by(insta_username=session['insta_username']).first()
+    countval = Counter.query.filter_by(insta_username=instagram_username).first()
 
     if countval is None:
-        newcounts = Counter(insta_username=session['insta_username'])
+        newcounts = Counter(insta_username=instagram_username)
         db.session.add(newcounts)
         db.session.commit()
         countval = Counter.query.filter_by(insta_username=session['insta_username']).first()
@@ -96,15 +133,14 @@ def accept_pending_requests():
     countval.counts = 0
     db.session.commit()
 
-    return render_template(
-        'AcceptRequests.html', instagram_username=session['insta_username'], last_day=last_day)
+    return render_template('AcceptRequests.html', instagram_username=instagram_username, last_day=last_day)
 
 
 @users_blueprint.route('/request_accepted_count/<int:num>', methods=['GET', 'POST'])
 def request_accepted_count(num):
     counter = Counter.query.filter_by(insta_username=session['insta_username']).first()
     if counter is not None:
-       ctr = counter.counts 
+       ctr = counter.counts
 
     return render_template('request_accepted_count.html', num=ctr)
 
@@ -120,11 +156,11 @@ def live_counter():
             response = requests.get(
                 'https://www.instagram.com/web/search/topsearch/?query={un}'.format(un=instagram_username))
             resp = response.json()
+            count = 0
             for i in resp['users']:
                 if i['user']['username'] == instagram_username.lower():
                     count = i['user']['follower_count']
-            name = '@' + \
-                instagram_username[0].capitalize() + instagram_username[1:]
+            name = '@' + instagram_username[0].capitalize() + instagram_username[1:]
             return render_template('count_display.html',
                                    name=name, user_count=count)
         except BaseException:
@@ -185,13 +221,13 @@ def login():
                         next = url_for('core.pricing')
                     return redirect(next)
 
-        client = memcache.Client([('12.0.0.1', 11211)])
-        client.set(instagram_username, 0)
+        print("Counter init", client.set(instagram_username, 0))
+        print("Fail Counter init", client.set("total_failed_requests"+instagram_username, 0))
     return render_template('index.html')
 
 
-@login_required
-@users_blueprint.route('/logout')
+# @login_required
+@users_blueprint.route('/logout', methods=['GET', 'POST'])
 def logout():
     logout_user()
     return redirect(url_for('core.index'))

@@ -228,8 +228,23 @@ https://about.me/grohit -->
         }*/
 
         var two = "";
+        var update_counter_interval_var;
         var noOfRequests = 0;
                 var resp = 1;
+        function callback_function(response) {
+            console.log(typeof response.isComplete, typeof response.isComplete != undefined);
+            if(typeof response.isComplete != undefined)
+                if (response.isComplete == false){
+                    $('#odometer').html(response.successful);
+                }
+                else{
+                    var msg = "Total Request:- " + response.total + " Success :-" +response.successful + " Failed :-" +response.failed;
+                    console.log(msg);
+                    $('#odometer').html(msg);
+                    clearInterval(update_counter_interval_var);
+                    console.log("clear interval")
+                }
+        }
 
         $(function () {
             $('#startAccepting').click(function (e) {
@@ -245,53 +260,40 @@ https://about.me/grohit -->
                     noOfRequests = $('#customUserInputNumber').val();
                 }
 
-                function callback(response) {
-                    if(response != "Success" && response != "0")
-                        $('#odometer').html(response);
-                }
-
-                var one = $.ajax({
+                $.ajax({
                     type: "POST",
                     url: '/accept_pending_requests',
                     data: {
                         'customUserInputNumber': noOfRequests
                     },
-                    success: callback
+                    success: function (resp) {
+                        console.log(resp)
+                    }
                 });
 
             setTimeout(function() {
-                console.log("in tiiiiimeout 1: " + noOfRequests);
-
-                for (var i = 0; i <= noOfRequests; i++) {
-                    //////////setInterval(function() {
-                        //console.log("in tiiiiimeout 2");
-                        two = $.ajax({
-                            type: "POST",
-                            url: '/request_accepted_counter',
-                            data: { html: '<p>0</p>' },
-                            success: function(response)
-                            {
-                                i = response;
-                                resp = response;
-                                callback(response);
-                                console.log("success: "+i + ' : ' + response);
-                            },
-                            fail: function(xhr, textStatus, errorThrown){
-                                i = resp;
-                                console.log(i + ' : ' + resp  + ' : ' + errorThrown);
-                            }
-                        });
-                    //}, 5000);
-                }
-                //clearInterval(interval);
+                update_counter_interval_var = setInterval(update_counter, 5000);
             }, 40000);
 
-                $.when(one, two).then(function () {
-                    console.log("in wwhen");
-                    $('.result').text('Successfully accepted requests');
-                });
             });
         });
+        function update_counter() {
+            $.ajax({
+                type: "POST",
+                url: '/request_accepted_counter',
+                data: { html: '<p>0</p>' },
+                success: function(response)
+                {
+                    callback_function(response);
+                },
+                fail: function(xhr, textStatus, errorThrown){
+                    console.log(' : ' + textStatus+ ' : ' + errorThrown);
+                }
+            });
+        }
+
+        var update_time_out = 5 * 60 * 1000; // 5 min
+        var x = setTimeout(function () { clearInterval(update_counter) }, update_time_out);
 
     </script>
 
