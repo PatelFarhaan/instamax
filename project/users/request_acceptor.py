@@ -105,6 +105,8 @@ class InstagramBot:
                         button_2=driver.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]')
                         button_2.click()
             except Exception as error_1:
+		tp = str(int(time.time()))
+		driver.save_screenshot(tp+".png")
                 print("Login Error 1", str(error_1))
 
             if is_only_login == True:
