@@ -197,27 +197,29 @@ def login():
         user = Users.query.filter_by(insta_username=instagram_username).first()
         if insta_login_response and user is not None:
             # user.is_subscribed = True
+            ok=login_user(user)
             user.till_date = datetime.datetime.utcnow() + timedelta(days=1)
             if user.is_subscribed:
                 if datetime.datetime.utcnow() < user.till_date:
-                    ok = login_user(user)
-                    print(ok)
-                    print("subscribed", "is_authenticated",current_user.is_authenticated())
+
                     next = request.args.get('next')
+                    print("subscribed", "is_authenticated",current_user.is_authenticated(), "next", next)
 
                     if next is None or not next[0] == '/':
                         next = url_for('users.accept_pending_requests')
                     return redirect(next)
 
-            if user.is_subscribed == False:
+            elif user.is_subscribed == False:
                 try:
                     if datetime.datetime.utcnow() > user.till_date:
                         user.till_date = None
                         user.from_date = None
                         user.is_subscribed = False
                         db.session.commit()
-                except BaseException:
-                    ok = login_user(user)
+                except BaseException as err:
+                    print("ERROR-> ", err)
+                    pass
+                finally:
                     next = request.args.get('next')
                     if next is None or not next[0] == '/':
                         next = url_for('core.pricing')
