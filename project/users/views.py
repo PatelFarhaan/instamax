@@ -196,11 +196,13 @@ def login():
 
         user = Users.query.filter_by(insta_username=instagram_username).first()
         if insta_login_response and user is not None:
-            user.is_subscribed = True
+            # user.is_subscribed = True
             user.till_date = datetime.datetime.utcnow() + timedelta(days=1)
             if user.is_subscribed:
                 if datetime.datetime.utcnow() < user.till_date:
                     ok = login_user(user)
+                    print(ok)
+                    print("subscribed", "is_authenticated",current_user.is_authenticated())
                     next = request.args.get('next')
 
                     if next is None or not next[0] == '/':
