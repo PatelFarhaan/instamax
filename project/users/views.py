@@ -146,6 +146,7 @@ def accept_pending_requests(context=None):
 @users_blueprint.route('/request_accepted_count/<int:num>', methods=['GET', 'POST'])
 def request_accepted_count(num):
     counter = Counter.query.filter_by(insta_username=session['insta_username']).first()
+    ctr = None
     if counter is not None:
        ctr = counter.counts
 
@@ -242,6 +243,8 @@ def login():
 # @login_required
 @users_blueprint.route('/logout', methods=['GET', 'POST'])
 def logout():
+    session.clear()
+    # print(session)
     logout_user()
     return redirect(url_for('core.index'))
 

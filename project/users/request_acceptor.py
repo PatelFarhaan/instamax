@@ -151,9 +151,36 @@ class InstagramBot:
     def check_logout(self):
         try:
             user_name_elem=self.driver.find_element_by_xpath("//input[@name='username']")
-            self.login(False)
+            # self.login(False)
         except Exception as error_item:
             print("user not logout yet", error_item)
+            print("\n Logging out user")
+            if "csrftoken" in self.session_items:
+                csrf_token=self.session_items["csrftoken"]
+                session_id=self.session_items["sessionid"]
+                mid=self.session_items["mid"]
+                ds=self.session_items["ds_user_id"]
+
+                headers={
+                    'Host': "www.instagram.com",
+                    'User-Agent': "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:69.0) Gecko/20100101 Firefox/69.0",
+                    'Accept': "*/*",
+                    'Accept-Language': "en-US,en;q=0.5",
+                    'Accept-Encoding': "gzip, deflate, br",
+                    'X-CSRFToken': csrf_token,
+                    'Content-Type': "application/x-www-form-urlencoded",
+                    'X-Requested-With': "XMLHttpRequest",
+                    'Connection': "keep-alive",
+                    "Content-Length": "0",
+                    "Cookie": "csrftoken={ct};  sessionid={sid}; rur=FRC; mid={mid}; ds_user_id={ds};".format(ct=csrf_token, sid=session_id, mid=mid, ds=ds),
+                    'Cache-Control': "no-cache",
+                }
+                url="https://www.instagram.com/accounts/logout/"
+                pdb.set_trace()
+                querystring={"csrfmiddlewaretoken": csrf_token}
+                response=requests.request("POST", url, headers=headers, data=querystring)
+                response_2=response.json()
+                print(response_2)
 
 
 
