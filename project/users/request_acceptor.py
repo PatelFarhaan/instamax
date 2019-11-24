@@ -2,7 +2,6 @@ import pdb
 import time
 import random
 
-import memcache
 import requests
 from flask import session
 from selenium import webdriver
@@ -14,7 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from project import db
 from project.users.models import Counter
 
-client = memcache.Client([('127.0.0.1', 11211)])
+from project.users.memcache_ctrl import client
 
 class InstagramBot:
 
@@ -270,7 +269,7 @@ class InstagramBot:
             self.unsuccess_request += 1
             self.driver.get_screenshot_as_file("{}.png".format(user_id))
             if response.text == "Please wait a few minutes before you try again.":
-                overload_issue = random.randint(4, 10)
+                overload_issue = random.randint(6, 10)
                 time.sleep(overload_issue)
             with open("{}.text".format(user_id), "w") as ftr:
                 ftr.write(response.text)

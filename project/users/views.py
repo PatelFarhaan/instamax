@@ -8,13 +8,13 @@ from project.users.models import Users, Counter
 from project.users.request_acceptor import InstagramBot
 from flask_login import login_required, login_user, logout_user, current_user
 from flask import Blueprint, render_template, redirect, url_for, request, session, make_response, jsonify
-import memcache
 import pdb
 import math
 # from project import LOGGER_DEBUG
 
 sys.path.append('../../')
-client = memcache.Client([('127.0.0.1', 11211)])
+
+from project.users.memcache_ctrl import client
 
 users_blueprint = Blueprint('users', __name__, template_folder='templates')
 
@@ -56,7 +56,14 @@ def request_accepted_counter():
 @login_required
 @users_blueprint.route('/accept_pending_requests', methods=['GET', 'POST'])
 def accept_pending_requests(context=None):
-    instagram_username = session.get("insta_username", '')
+    instagram_username = session.get("insta_username", None)
+    if not instagram_username:
+        return redirect(url_for("users.login"))
+    is_subscription_check, url_redirect=check_subscription(instagram_username)
+    if not is_subscription_check:
+        return redirect(url_redirect)
+
+    print("instagram_username",  session)
     if request.method == 'POST':
         resp = 'Success'
         MAX_RESULT_SIZE = 1000
@@ -183,7 +190,7 @@ def login():
         insta_bot.closeBrowser()
 
         if insta_login_response == False:
-            msg = 'Invalid Credentails'
+            msg = 'Invalid Credentials'
             return render_template('index.html', msg=msg)
 
         if insta_login_response:
@@ -196,34 +203,36 @@ def login():
 
         user = Users.query.filter_by(insta_username=instagram_username).first()
         if insta_login_response and user is not None:
-            # user.is_subscribed = True
-            ok=login_user(user)
-            user.till_date = datetime.datetime.utcnow() + timedelta(days=1)
-            if user.is_subscribed:
-                if datetime.datetime.utcnow() < user.till_date:
-
-                    next = request.args.get('next')
-                    print("subscribed", "is_authenticated",current_user.is_authenticated(), "next", next)
-
-                    if next is None or not next[0] == '/':
-                        next = url_for('users.accept_pending_requests')
-                    return redirect(next)
-
-            elif user.is_subscribed == False:
-                try:
-                    if datetime.datetime.utcnow() > user.till_date:
-                        user.till_date = None
-                        user.from_date = None
-                        user.is_subscribed = False
-                        db.session.commit()
-                except BaseException as err:
-                    print("ERROR-> ", err)
-                    pass
-                finally:
-                    next = request.args.get('next')
-                    if next is None or not next[0] == '/':
-                        next = url_for('core.pricing')
-                    return redirect(next)
+            is_subscription_check, url_redirect = check_subscription(instagram_username)
+            if not is_subscription_check:
+                return redirect(url_redirect)
+            # print()
+            # user.till_date = datetime.datetime.utcnow() + timedelta(days=1)
+            # if user.is_subscribed:
+            #     if datetime.datetime.utcnow() < user.till_date:
+            #
+            #         next = request.args.get('next')
+            #         print("subscribed", "is_authenticated",current_user.is_authenticated(), "next", next)
+            #
+            #         if next is None or not next[0] == '/':
+            #             next = url_for('users.accept_pending_requests')
+            #         return redirect(next)
+            #
+            # elif user.is_subscribed == False:
+            #     try:
+            #         if datetime.datetime.utcnow() > user.till_date:
+            #             user.till_date = None
+            #             user.from_date = None
+            #             user.is_subscribed = False
+            #             db.session.commit()
+            #     except BaseException as err:
+            #         print("ERROR-> ", err)
+            #         pass
+            #     finally:
+            #         next = request.args.get('next')
+            #         if next is None or not next[0] == '/':
+            #             next = url_for('core.pricing')
+            #         return redirect(next)
 
         print("Counter init", client.set(instagram_username, 0))
         print("Fail Counter init", client.set("total_failed_requests"+instagram_username, 0))
@@ -235,3 +244,37 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('core.index'))
+
+
+def check_subscription(user_name):
+    user=Users.query.filter_by(insta_username=user_name).first()
+    ok=login_user(user)
+    if user is not None:
+        user.till_date=datetime.datetime.utcnow() + timedelta(days=1)
+        if user.is_subscribed:
+            print(url_for('users.accept_pending_requests'))
+            return user.is_subscribed, url_for('users.accept_pending_requests')
+            # if datetime.datetime.utcnow() < user.till_date:
+            #     next=request.args.get('next')
+            #     print("subscribed", "is_authenticated", current_user.is_authenticated(), "next", next)
+            #     if next is None or not next[0] == '/':
+            #         next=url_for('users.accept_pending_requests')
+            #     return redirect(next)
+
+        elif user.is_subscribed == False:
+            try:
+                if datetime.datetime.utcnow() > user.till_date:
+                    user.till_date=None
+                    user.from_date=None
+                    user.is_subscribed=False
+                    db.session.commit()
+            except BaseException as err:
+                print("ERROR-> ", err)
+                pass
+            finally:
+                # next=request.args.get('next')
+                # if next is None or not next[0] == '/':
+                #     next=url_for
+                return user.is_subscribed, url_for('core.pricing')
+    else:
+        return False, url_for('core.index')
