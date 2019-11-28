@@ -5,3 +5,4 @@ development.env
 instamax.pem
 new_instamax.pem
 __pycache__/
+*.png
