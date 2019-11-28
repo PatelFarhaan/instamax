@@ -57,13 +57,13 @@ def request_accepted_counter():
 @users_blueprint.route('/accept_pending_requests', methods=['GET', 'POST'])
 def accept_pending_requests(context=None):
     instagram_username = session.get("insta_username", None)
-    if not instagram_username:
-        return redirect(url_for("users.login"))
-    is_subscription_check, url_redirect=check_subscription(instagram_username)
-    if not is_subscription_check:
-        return redirect(url_redirect)
-
     print("instagram_username",  session)
+    #if instagram_username is None:
+    #    return redirect(url_for("users.login"))
+    #is_subscription_check, url_redirect=check_subscription(instagram_username)
+    #if not is_subscription_check:
+    #    return redirect(url_redirect)
+
     if request.method == 'POST':
         resp = 'Success'
         MAX_RESULT_SIZE = 1000
@@ -205,7 +205,7 @@ def login():
         user = Users.query.filter_by(insta_username=instagram_username).first()
         if insta_login_response and user is not None:
             is_subscription_check, url_redirect = check_subscription(instagram_username)
-            if not is_subscription_check:
+            if is_subscription_check is True:
                 return redirect(url_redirect)
             # print()
             # user.till_date = datetime.datetime.utcnow() + timedelta(days=1)
