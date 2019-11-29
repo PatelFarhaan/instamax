@@ -56,7 +56,7 @@ def account():
 
             user = Users.query.filter_by(insta_username=username).first_or_404()
             user.subscription_plan = subscription
-            user.from_date = datetime.datetime.utcnow()
+            user.from_date = datetime.datetime.now()
             user.till_date = datetime.datetime.now() + timedelta(days=int(subscription))
             user.is_subscribed = True
             db.session.commit()

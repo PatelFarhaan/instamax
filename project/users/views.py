@@ -124,7 +124,7 @@ def accept_pending_requests(context=None):
     try:
         user = Users.query.filter_by( insta_username=session['insta_username']).first()
         till_date = user.till_date
-        last_day = (till_date - datetime.datetime.utcnow()).days
+        last_day = (till_date - datetime.datetime.now()).days
 
     except BaseException:
         last_day = None
@@ -256,7 +256,7 @@ def check_subscription(user_name):
     ok=login_user(user)
     if user is not None:
         if user.is_subscribed:
-            if datetime.datetime.utcnow() > user.till_date:
+            if datetime.datetime.now() > user.till_date:
                 user.till_date=None
                 user.from_date=None
                 user.is_subscribed=False

@@ -18,7 +18,7 @@ class Admin(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(256))
     hashed_password = db.Column(db.String(100))
-    created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    created = db.Column(db.DateTime, default=datetime.datetime.now())
 
     def __init__(self,email,password):
         self.email = email
